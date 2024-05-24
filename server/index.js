@@ -17,7 +17,8 @@ mongoose.connect(`mongodb+srv://pahwagautam47:${PASSWORD}@cluster0.ptoi0ie.mongo
     console.error(`MongoDB Connection error: ${err}`);
 })
 
-
+// to serve static files
+app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 app.use(cors({
