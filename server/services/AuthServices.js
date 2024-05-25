@@ -127,7 +127,7 @@ const AuthServices = {
             pass:process.env.EMAILPASSWORD
           }
         });
-        console.log(token.token);
+
         const link=`http://127.0.0.1:5000/api/user/reset-password/view/${token.token}`;
         const info= await transporter.sendMail({
           from:process.env.EMAILUSER,
@@ -140,7 +140,7 @@ const AuthServices = {
              </div>
           `
         });
-        console.log("password reset email send successfully");
+
          res.send("password reset email send successfully");
     }
     catch(err){
@@ -151,8 +151,7 @@ const AuthServices = {
     try{
         const token=await Token.findOne({token:req.params.token});
         const newPassword= req.body['new-password'];
-        console.log(token);
-        console.log(newPassword);
+
         const hashed=await bcrypt.hash(newPassword,10);
         await User.updateOne({_id:token.userId},{$set:{password:hashed}});
         
