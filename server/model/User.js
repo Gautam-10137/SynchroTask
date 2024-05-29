@@ -17,11 +17,6 @@ const userSchema= new mongoose.Schema({
     verified:{
         type:Boolean,
         default:false
-    },
-    role:{
-        type:String,
-        enum:['admin','manager','team_member'],
-        default:'team_member'
     }
 });
 
