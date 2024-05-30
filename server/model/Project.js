@@ -28,7 +28,7 @@ const projectSchema = new mongoose.Schema(
         ref: "Task",
       },
     ],
-  }, { timestamps: true} // auto add the created_at and updated_at
+  },{ timestamps: true } // auto add the created_at and updated_at
 );
 
 const Project = mongoose.model("Project", projectSchema);
