@@ -1,3 +1,4 @@
+const { removeMemberFromProject } = require("../controller/ProjectController");
 const Project = require("../model/Project");
 
 const ProjectServices = {
@@ -14,14 +15,38 @@ const ProjectServices = {
   },
   addMemberToProject: async (projectId, userId, role) => {
     try {
-      const updatedProject=await Project.findByIdAndUpdate(projectId, {
-        $push: { members: { userId, role } },
-      },{new:true,useFindAndModify:false}
+      const updatedProject = await Project.findByIdAndUpdate(
+        projectId,
+        {
+          $push: { members: { userId, role } },
+        },
+        { new: true, useFindAndModify: false }
       );
-      return {success:true,message:'Member added successfully',project:updatedProject};
-
+      return {
+        success: true,
+        message: "Member added successfully",
+        project: updatedProject,
+      };
     } catch (err) {
       console.error("Error Adding user to project :" + err.message);
+      throw err;
+    }
+  },
+  removeMemberFromProject: async (projectId, userId) => {
+    try {
+      const project = await Project.findByIdAndUpdate(
+        projectId,
+        {
+          $pull: { members: { userId: userId } },
+        },
+        { new: true }
+      );
+      if (!project) {
+        throw new Error("Project not found");
+      }
+      return project;
+    } catch (err) {
+      console.error("Error removing the user");
       throw err;
     }
   },

@@ -18,10 +18,10 @@ const taskSchema = new mongoose.Schema({
     enum:['low','medium','high'],
     default:'medium'
   },
-  assignedTo:{
+  assignedTo:[{
     type: mongoose.Schema.Types.ObjectId,
     ref:'User',
-  },
+  }],
   projectId:{
     type: mongoose.Schema.Types.ObjectId,
     ref:'Project',
@@ -30,13 +30,13 @@ const taskSchema = new mongoose.Schema({
   dueDate:{
     type:Date,
   },
-  comments:{
+  comments:[{
     type: mongoose.Schema.Types.ObjectId,
     ref:'Comment'
-  }
+  }]
 },{
     timestamps:true
 });
 
-const task = mongoose.model("Task", taskSchema);
-module.exports = task;
+const Task = mongoose.model("Task", taskSchema);
+module.exports = Task;

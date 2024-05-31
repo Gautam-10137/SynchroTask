@@ -13,16 +13,27 @@ const PostController={
     },
     addMemberToProject: async(req,res)=>{
       try{
-        const {projectId,userId,role}=req.body;
+        const {projectId,userId}=req.params;
+        const {role}=req.body;
         const response=await ProjectServices.addMemberToProject(projectId,userId,role);
         res.status(200).send({project:response.project}); 
       }catch(err){
         console.error('Error adding member to project:'+err.message);
         res.status(500).send({message:'Error adding member to project'});
       }
-
-    }
+    },
+    removeMemberFromProject: async(req,res)=>{
+      try{
+        const {projectId,userId}=req.params;
+        const project= await ProjectServices.removeMemberFromProject(projectId,userId);
+        res.status(200).send({project});
+      }catch(err){
+         console.error('Error removing member from project :'+err.message());
+      }
+    },
+    
       
+
     
 }; 
 
