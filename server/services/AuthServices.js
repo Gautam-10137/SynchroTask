@@ -13,12 +13,12 @@ const AuthServices = {
     try {
       const { name, email, password } = detail;
       const user = await User.findOne({ email: email });
-      if (user != null)
+      if (user){
         return {
           message: "A User with given email Already Exists!",
           user: null
         };
-
+      }
       const newUser = new User({ name, email, password });
 
       bcrypt.hash(newUser.password, 10, async (err, hashed) => {

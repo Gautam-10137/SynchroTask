@@ -1,4 +1,3 @@
-const { removeMemberFromProject } = require("../controller/ProjectController");
 const Project = require("../model/Project");
 
 const ProjectServices = {
@@ -32,7 +31,7 @@ const ProjectServices = {
       throw err;
     }
   },
-  removeMemberFromProject: async (projectId, userId) => {
+  removeMember: async (projectId, userId) => {
     try {
       const project = await Project.findByIdAndUpdate(
         projectId,

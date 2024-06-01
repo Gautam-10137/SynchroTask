@@ -1,9 +1,13 @@
 const Project = require("../model/Project");
 const Task = require("../model/Task");
+const Comment=require('../model/Comment');
 const TaskServices = {
   createTask: async (detail, projectId) => {
     try {
       const newTask = new Task({ ...detail, projectId: projectId });
+      if(!newTask){
+        throw new Error('Incorrect Task Deatils ');
+      }
       await newTask.save();
       await Project.findByIdAndUpdate(projectId, {
         $push: { tasks: newTask._id },
@@ -17,7 +21,13 @@ const TaskServices = {
   addComment: async (taskId, detail) => {
     try {
       const { author, content } = detail;
+      if(!author || !content || !taskId){
+        throw new Error('taskId, author and content are required');
+      }
       const newComment = new Comment({ taskId, author, content });
+      if(!newComment){
+        throw new Error('Incorrect Details provided.');
+      }
       await newComment.save();
       const updatedTask = await Task.findByIdAndUpdate(taskId, {
         $push: {comments:newComment._id},
@@ -25,7 +35,6 @@ const TaskServices = {
       return updatedTask;
     } catch (err) {
       console.error("Error adding comment.");
-      throw err;
     }
   },
   addAssignee: async(taskId,userId)=>{
@@ -33,6 +42,9 @@ const TaskServices = {
         const task= await Task.findByIdAndUpdate(taskId,{
             $addToSet:{assignedTo:userId}
         },{new:true}).populate('assignedTo');
+        if(!task){
+          throw new Error('Incorrect Info provided.');
+        }
         return task;
     }catch(err){
         console.error('Error adding assignee');
@@ -44,6 +56,9 @@ const TaskServices = {
       const task=await Task.findByIdAndUpdate(taskId,{
         $pull:{assignedTo:userId}
       },{new:true}).populate('assignedTo');
+      if(!task){
+        throw new Error('Incorrect Info provided.');
+      }
       return task;
     }catch(err){
         console.error('Error removing assignee.');

@@ -1,6 +1,6 @@
 const ProjectServices = require("../services/ProjectServices");
 
-const PostController={
+const ProjectController={
     createProject: async (req,res)=>{
       try{
         const detail=req.body;
@@ -13,8 +13,8 @@ const PostController={
     },
     addMemberToProject: async(req,res)=>{
       try{
-        const {projectId,userId}=req.params;
-        const {role}=req.body;
+        const {projectId}=req.params;
+        const {userId,role}=req.body;
         const response=await ProjectServices.addMemberToProject(projectId,userId,role);
         res.status(200).send({project:response.project}); 
       }catch(err){
@@ -25,16 +25,13 @@ const PostController={
     removeMemberFromProject: async(req,res)=>{
       try{
         const {projectId,userId}=req.params;
-        const project= await ProjectServices.removeMemberFromProject(projectId,userId);
+        const project= await ProjectServices.removeMember(projectId,userId);
         res.status(200).send({project});
       }catch(err){
          console.error('Error removing member from project :'+err.message());
       }
     },
     
-      
-
-    
 }; 
 
-module.exports=PostController;
+module.exports=ProjectController;

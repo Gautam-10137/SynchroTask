@@ -5,7 +5,7 @@ const bodyParser=require('body-parser');
 const cors=require('cors');
 const PASSWORD=process.env.DBPASSWORD;
 const PORT=process.env.PORT;
-const userRouter=require('./routes/UserRouter');
+const route=require('./routes/route');
 
 
 const app= express();
@@ -26,7 +26,7 @@ app.use(cors({
     method:['GET','POST','PUT','DELETE']
 }));
 
-app.use('/api',userRouter);
+app.use('/api',route);
 app.listen(PORT,()=>{
     console.log("Server is listening on port: "+PORT);
 });

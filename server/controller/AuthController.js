@@ -4,10 +4,11 @@ const AuthController={
        try{
         const detail=req.body;
         
-        const exists=await AuthServices.register(detail);
-        if(!exists.user)
-            res.status(429).json({message:'A User with given email Already Exists!'});
-
+        const user=await AuthServices.register(detail);
+        if(!user){
+            res.status(429).send({message:'A User with given email Already Exists!'});
+            return;
+        }
         res.status(200).json(user);
        }
        catch(err){

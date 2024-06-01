@@ -24,14 +24,16 @@ const authenticate=(req,res,next)=>{
         }
         next();
     }catch(err){
-        console.err('Error checking Authentication.');
+        console.error('Error checking Authentication.');
         res.status(500).send({message:'Error Authenticating the request'});
     }
 }
 
-router.use('/user',authenticate,userRoute);
-router.use('/project',authenticate,projectRoute);
-router.use('/tasks',authenticate,taskRoute);
-
+router.use('/user',userRoute);
+// ,authenticate
+router.use('/project',projectRoute);
+// authenticate,
+router.use('/task',taskRoute);
+// ,authenticate
 module.exports=router;
 

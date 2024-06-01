@@ -4,11 +4,11 @@ const AuthServices = require('../services/AuthServices');
 const path=require('path');
 const router=express.Router();
 
-router.post('/user/auth/register',AuthController.register);
-router.post('/user/auth/login',AuthController.login);
-router.post('/user/forgot-password',AuthServices.forgotPassword);
-router.get('/user/confirm/:token', AuthServices.activeAccount);
-router.get('/user/reset-password/view/:token',async (req,res)=>{
+router.post('/auth/register',AuthController.register);
+router.post('/auth/login',AuthController.login);
+router.post('/forgot-password',AuthServices.forgotPassword);
+router.get('/confirm/:token', AuthServices.activeAccount);
+router.get('/reset-password/view/:token',async (req,res)=>{
     try{
         const token= req.params.token;
         const viewsPath = path.join(__dirname, '../public/views');
@@ -18,7 +18,7 @@ router.get('/user/reset-password/view/:token',async (req,res)=>{
         res.status(500).send("Error Reseting Password")
     }
 });
-router.post('/user/reset-password/:token',AuthServices.resetPassword);
+router.post('/reset-password/:token',AuthServices.resetPassword);
 
 
 module.exports=router;

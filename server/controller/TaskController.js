@@ -4,9 +4,9 @@ const TaskController = {
   createTask: async (req, res) => {
     try {
       const {projectId} = req.params;
-      const detail = req.body();
-      const task = TaskController.createTask(detail, projectId);
-      res.status(201).send(task);
+      const detail = req.body;
+      const task =await TaskServices.createTask(detail, projectId);
+      res.status(201).send({task});
     } catch (err) {
       res.status(500).send({ message: "Task creation failed." });
     }
@@ -14,8 +14,8 @@ const TaskController = {
   addComment: async(req,res)=>{
     try{
       const {taskId}=req.params;
-      const  detail=req.body();
-      const task=TaskServices.addComment(taskId,detail);
+      const  detail=req.body;
+      const task=await TaskServices.addComment(taskId,detail);
       res.status(200).send({task});
     }catch(err){
         console.error('Error adding comment.');
@@ -26,6 +26,7 @@ const TaskController = {
     try{
        const {taskId}=req.params;
        const {userId}=req.body;
+       console.log(taskId,userId);
        const task=await TaskServices.addAssignee(taskId,userId);
        res.status(200).send({task});
     }catch(err){
@@ -41,7 +42,9 @@ const TaskController = {
        res.status(200).send({task});
     }catch(err){
         console.error('Error removing assignee');
-        res.status(500).send({message:'Error removinf assignee'});
+        res.status(500).send({message:'Error removing assignee'});
     }
   }
 };
+
+module.exports=TaskController;
