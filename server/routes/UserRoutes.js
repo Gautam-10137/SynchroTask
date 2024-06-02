@@ -6,7 +6,7 @@ const router=express.Router();
 
 router.post('/auth/register',AuthController.register);
 router.post('/auth/login',AuthController.login);
-router.post('/forgot-password',AuthServices.forgotPassword);
+router.post('/auth/forgot-password',AuthServices.forgotPassword);
 router.get('/confirm/:token', AuthServices.activeAccount);
 router.get('/reset-password/view/:token',async (req,res)=>{
     try{

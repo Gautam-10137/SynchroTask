@@ -1,6 +1,7 @@
 import {createSlice}  from '@reduxjs/toolkit'
 import setAuthToken from '../utils/setAuthToken';
 import axiosApi from '../axios/api';
+import {jwtDecode} from 'jwt-decode';
 const initialState={
        token: localStorage.getItem('token'),
        isAuthenticated:null,
@@ -15,13 +16,13 @@ const authSlice= createSlice({
             state.isAuthenticated=true;
             state.loading=false;
             state.user=action.payload;
+            
         },
-        registerSuccess: (state,action)=>{
-            state.token=action.payload.token;
+        registerSuccess: (state,action)=>{    
             state.isAuthenticated=true;
             state.loading=false;
             state.user=action.payload.user;
-            localStorage.setItem('token',action.payload.token);
+            console.log(state.user);
         },
         loginSuccess: (state,action)=>{
             state.token=action.payload.token;
@@ -65,10 +66,10 @@ export const loadUser=()=> async(dispatch)=>{
     if(localStorage.token){
         setAuthToken(localStorage.token);
     }
-
     try{
-        const res= await axios.get('/api/auth');
-        dispatch(userLoaded(res.data));
+        const token=localStorage.getItem('token');
+        const user=jwtDecode(token);
+        dispatch(userLoaded(user));
     }
     catch(err){
         dispatch(authError());
@@ -79,9 +80,9 @@ export const register=({name,email,password})=> async(dispatch)=>{
     const body=JSON.stringify({name,email,password});
     
     try{
-        const res= await axiosApi.post('api/auth/register',body);
+        const res= await axiosApi.post('user/auth/register',body);
+        console.log(res.data);
         dispatch(registerSuccess(res.data));
-        dispatch(loadUser());
     }
     catch(err){
         dispatch(authError());
@@ -93,7 +94,8 @@ export const login=({email,password})=>async(dispatch)=>{
     const body=JSON.stringify({email,password});
 
     try{
-        const res=await axiosApi.post('api/auth/login',body);
+        const res=await axiosApi.post('user/auth/login',body);
+        console.log(res.data);
         dispatch(loginSuccess(res.data));
         dispatch(loadUser());
     }

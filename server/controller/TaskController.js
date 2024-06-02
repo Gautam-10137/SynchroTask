@@ -26,7 +26,6 @@ const TaskController = {
     try{
        const {taskId}=req.params;
        const {userId}=req.body;
-       console.log(taskId,userId);
        const task=await TaskServices.addAssignee(taskId,userId);
        res.status(200).send({task});
     }catch(err){

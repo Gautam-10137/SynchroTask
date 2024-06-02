@@ -29,7 +29,7 @@ const AuthServices = {
         const token= await AuthServices.generateToken(newUser);
         console.log(token);
         const link= `http://localhost:5000/api/user/confirm/${token.token}`;
-        await AuthServices.verifyEmail(email,link);
+        AuthServices.verifyEmail(email,link);
         // return {message:"Email sent. Check your mail",user:newUser};
       return newUser;
     } catch (e) {
@@ -51,7 +51,7 @@ const AuthServices = {
           return {success:false,message:'Invalid Password'};
         }
 
-        const payload={id:user._id,name:user.name};
+        const payload={id:user._id,name:user.name,email:user.email};
         const token=jwt.sign(payload,process.env.SECRET,{'expiresIn':'1h'});
         return {success:true,token:`Bearer ${token}`};
       }
@@ -141,10 +141,10 @@ const AuthServices = {
           `
         });
 
-         res.send("password reset email send successfully");
+         res.status(200).send("password reset email send successfully");
     }
     catch(err){
-      console.error(`Error Forgeting password`);
+      console.error(`Error Forgeting password.`);
     }
   },
   resetPassword: async(req,res)=>{
