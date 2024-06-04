@@ -1,5 +1,5 @@
 import {createSlice}  from '@reduxjs/toolkit'
-import setAuthToken from '../utils/setAuthToken';
+import {setAuthToken} from '../utils/utils';
 import axiosApi from '../axios/api';
 import {jwtDecode} from 'jwt-decode';
 const initialState={

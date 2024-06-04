@@ -1,13 +1,13 @@
 import React from 'react'
 import ProjectList from '../Project/ProjectList'
 
-const Home = () => {
+const Dashboard = () => {
   return (
     <div>
-   
-
+      DashBoard
+      <ProjectList/>
     </div>
   )
 }
 
-export default Home
+export default Dashboard

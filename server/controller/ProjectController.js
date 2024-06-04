@@ -11,6 +11,40 @@ const ProjectController={
         res.status(500).send({message:'Error adding new project'});
       }
     },
+    fetchProjects:async(req,res)=>{
+      try{
+        const {userId}=req.params;
+        const projects= await ProjectServices.fetchProjects(userId);
+        if(!projects || projects.length==0){
+          res.status(404).send({message:'No Projects found for a given user'});
+        }
+        res.status(200).send({projects});
+      }catch(err){
+        console.error('Error Fetching Projects'+err.message);
+        res.status(500).send({message:'Error Fetching Projects'});
+      }
+    },
+    updateProject: async(req,res)=>{
+      try{
+        const {projectId}=req.params;
+        const updateDetails=req.body;
+        const updatedProject= await ProjectServices.updateProject(projectId,updateDetails);
+
+        res.status(200).send({updatedProject});
+      }catch(err){
+        console.error('Error updating project:'+err.message);
+        res.status(500).send({message:'Error updating project'});
+      }
+    },
+    removeProject :async(req,res)=>{
+      try{
+          const {projectId}=req.params;
+          const project= await ProjectServices.removeProject(projectId);
+          res.status(200).send({message:'Project removed successfully',project}) ;
+      }catch(err){
+        res.status(500).send({message:'Error removing project'});
+      }
+    },
     addMemberToProject: async(req,res)=>{
       try{
         const {projectId}=req.params;
@@ -31,6 +65,7 @@ const ProjectController={
          console.error('Error removing member from project :'+err.message());
       }
     },
+    
     
 }; 
 
