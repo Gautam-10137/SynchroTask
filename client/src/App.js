@@ -6,21 +6,23 @@ import Navigator from './components/Navigator/Navigator';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
 import Dashboard from './components/Dashboard/Dashboard';
 import { ProjectProvider } from './context/ProjectContext';
+import ProjectDetail from './components/Project/ProjectDetail';
 function App() {
  
   return (
-    <div className="App">
+    <div className="App m-1">
       <BrowserRouter>
            <div>
               <Routes>
-                <Route path="/" element={<div><Navigator/><Home/></div>}></Route>
+                <Route path="/" element={<div><Navigator page={"Home"}/><Home/></div>}></Route>
                 <Route path="/login" element={<Login/>}></Route>
                 <Route path="/register" element={<Register/>}></Route>
               </Routes>
              
             <ProjectProvider> 
               <Routes>
-                <Route path="/dashboard" element={<div><Navigator /><Dashboard/></div>} />
+                <Route path="/dashboard" element={<div><Navigator page={"Dashboard"} /><Dashboard/></div>} />
+                <Route path="/project/:projectId" element={<div><Navigator page={"ProjectDetail"} /><ProjectDetail /></div>}></Route>
               </Routes>
             </ProjectProvider>
          

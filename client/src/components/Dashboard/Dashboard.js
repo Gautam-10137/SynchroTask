@@ -4,7 +4,6 @@ import ProjectList from '../Project/ProjectList'
 const Dashboard = () => {
   return (
     <div>
-      DashBoard
       <ProjectList/>
     </div>
   )

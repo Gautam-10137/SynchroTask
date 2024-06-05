@@ -14,16 +14,15 @@ const ProjectServices = {
       throw err;
     }
   },
-  fetchProjects: async(userId)=>{
+  fetchProjectFromDB: async(userId)=>{
     try{
-      const projects=await Project.find({'members.userId':userId});
-
+      const projects=await Project.find({'members.userId':userId}).populate('members.userId');
       return projects;
     }catch(err){
       console.error('Error fetching projects :'+err.message);
     }
   },
-  updateProject:async(projectId,updateDetails)=>{
+  updateProjectFromDB:async(projectId,updateDetails)=>{
     try{
       const updatedProject= await Project.findByIdAndUpdate(projectId,{
         $set: updateDetails
@@ -37,7 +36,7 @@ const ProjectServices = {
       console.error('Error updating project :'+err.message);
     }
   },
-  removeProject:async(projectId)=>{
+  removeProjectFromDB:async(projectId)=>{
     try{
       const project=await Project.findByIdAndDelete(projectId);
       if(!project){
@@ -67,7 +66,7 @@ const ProjectServices = {
       throw err;
     }
   },
-  removeMember: async (projectId, userId) => {
+  removeMemberFromProject: async (projectId, userId) => {
     try {
       const project = await Project.findByIdAndUpdate(
         projectId,

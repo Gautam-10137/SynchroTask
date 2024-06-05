@@ -18,12 +18,17 @@ const Login = ({}) => {
             ...formData,
          [name]:value
         })
-    }
+    };
 
     const handleFormSubmit=async (e)=>{
         e.preventDefault();
         dispatch(login(formData));
-    }
+        if(!showDialog){
+          const timer=setTimeout(()=>{
+            Navigate('/dashboard');
+         },1000)
+        }
+    };
 
     useEffect(()=>{
       if(showDialog){
@@ -31,7 +36,8 @@ const Login = ({}) => {
            Navigate('/');
         },5000)
       }
-    },[showDialog])
+    },[showDialog]);
+
     const handleReset= async(e)=>{
         try{
            e.preventDefault();
@@ -47,7 +53,7 @@ const Login = ({}) => {
         }catch(err){
           console.error(err.message);
         }
-    }
+    };
 
   return (
     <div>

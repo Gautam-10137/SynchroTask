@@ -2,6 +2,8 @@ import {createSlice}  from '@reduxjs/toolkit'
 import {setAuthToken} from '../utils/utils';
 import axiosApi from '../axios/api';
 import {jwtDecode} from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
+
 const initialState={
        token: localStorage.getItem('token'),
        isAuthenticated:null,
@@ -98,6 +100,8 @@ export const login=({email,password})=>async(dispatch)=>{
         console.log(res.data);
         dispatch(loginSuccess(res.data));
         dispatch(loadUser());
+        
+
     }
     catch(err){
         dispatch(authError());

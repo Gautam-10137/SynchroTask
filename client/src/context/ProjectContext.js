@@ -13,8 +13,10 @@ export const ProjectProvider=({children})=>{
       setLoading(true);
       try{
         const user=getUser();
-        const res=await axiosApi(`project/get/${user._id}`);
-        setProjects(res.data);
+        console.log("user:"+user.id);
+        const res=await axiosApi.get(`project/get/${user.id}`);
+        
+        setProjects(res.data.projects);
       }catch(err){
         console.error('Error fetching projects.');
       }finally{
@@ -24,7 +26,7 @@ export const ProjectProvider=({children})=>{
 
     const addProject= async(project)=>{
       try{
-        const res=await axiosApi('project/create',project);
+        const res=await axiosApi.post('project/create',project);
         setProjects([...projects,res.data]);
       }catch(err){
         console.error('Error adding project:'+err.message);

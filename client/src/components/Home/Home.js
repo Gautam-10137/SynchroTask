@@ -4,7 +4,7 @@ import ProjectList from '../Project/ProjectList'
 const Home = () => {
   return (
     <div>
-   
+   Home
 
     </div>
   )

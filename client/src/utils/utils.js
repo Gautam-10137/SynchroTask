@@ -11,6 +11,8 @@ export const  setAuthToken= (token)=>{
 
 export const getUser=()=>{
     const token=localStorage.getItem('token');
+
     const user=jwtDecode(token);
+
     return user;
 }
