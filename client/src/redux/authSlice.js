@@ -21,7 +21,7 @@ const authSlice= createSlice({
             
         },
         registerSuccess: (state,action)=>{    
-            state.isAuthenticated=true;
+            // state.isAuthenticated=true;
             state.loading=false;
             state.user=action.payload.user;
             console.log(state.user);

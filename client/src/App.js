@@ -7,6 +7,7 @@ import { BrowserRouter,Routes,Route } from 'react-router-dom';
 import Dashboard from './components/Dashboard/Dashboard';
 import { ProjectProvider } from './context/ProjectContext';
 import ProjectDetail from './components/Project/ProjectDetail';
+import CreateProject from './components/Project/CreateProject';
 function App() {
  
   return (
@@ -18,17 +19,21 @@ function App() {
                 <Route path="/login" element={<Login/>}></Route>
                 <Route path="/register" element={<Register/>}></Route>
               </Routes>
-             
+          </div>    
+          <div>
             <ProjectProvider> 
+              {/* <Navigator/> */}
               <Routes>
+                
                 <Route path="/dashboard" element={<div><Navigator page={"Dashboard"} /><Dashboard/></div>} />
                 <Route path="/project/:projectId" element={<div><Navigator page={"ProjectDetail"} /><ProjectDetail /></div>}></Route>
+                <Route path="/createProject"  element={<div><Navigator page={"ProjectDetail"} /><CreateProject/></div>}></Route>
               </Routes>
             </ProjectProvider>
-         
+          </div>
 
 
-           </div>
+          
       
       
       
