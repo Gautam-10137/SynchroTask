@@ -16,7 +16,7 @@ const ProjectList = () => {
       <div className="container mx-auto">
         <h1 className="text-3xl font-bold mb-8 text-center">Projects</h1>
         <div className="flex flex-wrap justify-around">
-          {projects.map((project) => (
+          {projects.length>0 && projects.map((project) => (
             <ProjectCard key={project._id} project={project} />
           ))}
         </div>

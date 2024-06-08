@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProjectList from '../Project/ProjectList';
 import { Link } from 'react-router-dom';
+import { useProjects } from '../../context/ProjectContext';
 // import CreateProject from '../Project/CreateProject';
 
 const Dashboard = () => {
-  
+  const {fetchProjects}=useProjects();
+
+  // useEffect(()=>{
+  //    fetchProjects();
+  // },[])
 
 
   return (

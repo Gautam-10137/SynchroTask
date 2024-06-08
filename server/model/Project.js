@@ -22,7 +22,7 @@ const projectSchema = new mongoose.Schema(
         },
       },
     ],
-    tasks: [
+    tasks: [  
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Task",
