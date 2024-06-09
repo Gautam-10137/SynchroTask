@@ -16,7 +16,13 @@ const ProjectServices = {
   },
   fetchProjectFromDB: async(userId)=>{
     try{
-      const projects=await Project.find({'members.userId':userId}).populate('members.userId').populate('tasks');
+      const projects=await Project.find({'members.userId':userId}).populate('members.userId').populate({
+        path: 'tasks',
+        populate: {
+          path: 'assignedTo',
+          model: 'User'
+        }
+      });;
       return projects;
     }catch(err){
       console.error('Error fetching projects :'+err.message);

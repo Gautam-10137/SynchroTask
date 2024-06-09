@@ -18,6 +18,13 @@ const TaskServices = {
       throw err;
     }
   },
+  fetchTaskFromDB: async()=>{
+    try{
+      
+    }catch(err){
+      console.error('Error fetching tasks');
+    }
+  },
   addComment: async (taskId, detail) => {
     try {
       const { author, content } = detail;

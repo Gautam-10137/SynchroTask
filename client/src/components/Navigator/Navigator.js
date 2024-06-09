@@ -1,10 +1,17 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { logout } from '../../redux/authSlice';
 
 const Navigator = ({ page }) => {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
-
+  const dispatch=useDispatch();
+  
+  const Navigate=useNavigate();
+  const handleLogout=()=>{
+    dispatch(logout());
+    Navigate('/');
+  }
   return (
     <div className="w-screen flex justify-between items-center p-5 bg-gray-800 text-white">
       <div className="pl-5 text-2xl font-bold">
@@ -26,9 +33,9 @@ const Navigator = ({ page }) => {
         ) : (
           <div className="flex items-center space-x-4">
             <span>Hello, {user.name}</span>
-            <Link to="/logout" className="text-red-300 hover:text-red-500 transition duration-300">
+            <button onClick={handleLogout} className="text-red-300 hover:text-red-500 transition duration-300">
               Logout
-            </Link>
+            </button>
           </div>
         )}
       </div>

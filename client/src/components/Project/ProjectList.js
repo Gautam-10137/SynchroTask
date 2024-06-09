@@ -12,7 +12,7 @@ const ProjectList = () => {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <section className="py-8 px-4 sm:px-6 lg:px-8 bg-gray-100">
+    <section className="py-8 px-4 sm:px-6 lg:px-8 bg-gray-200">
       <div className="container mx-auto">
         <h1 className="text-3xl font-bold mb-8 text-center">Projects</h1>
         <div className="flex flex-wrap justify-around">

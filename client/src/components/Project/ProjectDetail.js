@@ -28,11 +28,13 @@ const ProjectDetail = () => {
   });
   const { updateProject } = useProjects();
 
+
   useEffect(() => {
     if (projects.length > 0) {
       console.log("params", projectId);
       const foundProject = projects.find((proj) => proj._id === projectId);
-      console.log(projects);
+      console.log("foundProject");
+      console.log(foundProject);
       console.log(user);
       if (foundProject) {
         setProject(foundProject);
@@ -54,6 +56,7 @@ const ProjectDetail = () => {
   }, [projects, projectId]);
 
   const handleTaskClick = (task) => {
+    console.log("handle",task);
     setSelectedTask(task);
   };
 
