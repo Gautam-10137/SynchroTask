@@ -5,13 +5,18 @@ import AddTaskDialog from '../DialogBox/AddTaskDialog';
 import AddMemberDialog from '../DialogBox/AddMemberDialog';
 import TaskDetailDialog from '../DialogBox/TaskDetailDialog';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const CreateProject = () => {
   const { addProject } = useProjects();
+  var { user } = useSelector((state) => state.auth);
+  const _id=user.id;
+  const {id,...rest}=user;
+  user={_id,...rest};
   const [projectDetails, setProjectDetails] = useState({
     name: '',
     description: '',
-    members: [],
+    members: [{userId:user,role:'admin'}],
     tasks: [],
   });
   const Navigate=useNavigate();
