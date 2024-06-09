@@ -1,6 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-const AddMemberDialog = ({handleAddMemberSubmit,newMemberEmail,setNewMemberEmail,newMemberRole,setNewMemberRole,setShowAddMemberDialog}) => {
+const AddMemberDialog = ({showMemberError,handleAddMemberSubmit,newMemberEmail,setNewMemberEmail,newMemberRole,setNewMemberRole,setShowAddMemberDialog}) => {
+  
+  useEffect(()=>{
+
+  },[showMemberError]);
+  
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-black bg-opacity-50">
           <div className="bg-white p-8 rounded shadow-lg">
@@ -32,6 +37,11 @@ const AddMemberDialog = ({handleAddMemberSubmit,newMemberEmail,setNewMemberEmail
                   <option value="admin">Admin</option>
                 </select>
               </div>
+              {showMemberError && (
+                <div className=' text-red-600'>
+                  No Member with given email exists!
+                </div>
+              )}
               <div className="flex justify-end">
                 <button
                   type="button"

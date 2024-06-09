@@ -5,39 +5,49 @@ import { logout } from '../../redux/authSlice';
 
 const Navigator = ({ page }) => {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
-  const dispatch=useDispatch();
-  
-  const Navigate=useNavigate();
-  const handleLogout=()=>{
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
     dispatch(logout());
-    Navigate('/');
-  }
+    navigate('/');
+  };
+
   return (
-    <div className="w-screen flex justify-between items-center p-5 bg-gray-800 text-white">
-      <div className="pl-5 text-2xl font-bold">
-        <Link to="/" className="hover:text-gray-300 transition duration-300">
-          SynchroTask
-        </Link>
-      </div>
-      <div className="text-xl font-semibold">{page}</div>
-      <div className="pr-5">
-        {!isAuthenticated ? (
-          <div className="flex space-x-4">
-            <Link to="/login" className="text-blue-300 hover:text-blue-500 transition duration-300">
-              Login
-            </Link>
-            <Link to="/register" className="text-blue-300 hover:text-blue-500 transition duration-300">
-              SignUp
-            </Link>
-          </div>
-        ) : (
-          <div className="flex items-center space-x-4">
-            <span>Hello, {user.name}</span>
-            <button onClick={handleLogout} className="text-red-300 hover:text-red-500 transition duration-300">
-              Logout
-            </button>
-          </div>
-        )}
+    <div className="bg-gray-800 text-white">
+      <div className="container mx-auto flex justify-between items-center py-4">
+        <div className="text-2xl font-bold">
+          <Link to="/" className="hover:text-gray-300 transition duration-300">
+            SynchroTask
+          </Link>
+        </div>
+        <div className="text-xl font-semibold flex space-x-8">
+          <Link to="/" className="hover:text-gray-300 transition duration-300">
+            Home
+          </Link>
+          <Link to="/dashboard" className="hover:text-gray-300 transition duration-300">
+            Dashboard
+          </Link>
+        </div>
+        <div>
+          {!isAuthenticated ? (
+            <div className="flex space-x-4 mr-4">
+              <Link to="/login" className="text-blue-300 hover:text-blue-500 transition duration-300">
+                Login
+              </Link>
+              <Link to="/register" className="text-blue-300 hover:text-blue-500 transition duration-300">
+                Sign Up
+              </Link>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-4 ">
+              <span>Hello, {user.name}</span>
+              <button onClick={handleLogout} className="text-red-300 mr-2 hover:text-red-500 transition duration-300">
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

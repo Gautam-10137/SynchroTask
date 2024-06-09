@@ -97,103 +97,136 @@ const CreateProject = () => {
   };
 
   return (
-    <div className="container mx-auto mt-8">
-      <h2 className="text-2xl font-semibold mb-4">Create Project</h2>
-      <form onSubmit={handleSubmit} className="max-w-lg mx-auto">
-        <div className="mb-4">
-          <label htmlFor="name" className="block text-gray-700 font-medium mb-2">Project Name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={projectDetails.name}
-            onChange={handleInputChange}
-            className="w-full border border-gray-300 rounded-md p-2 focus:border-blue-500 focus:ring-blue-500"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="description" className="block text-gray-700 font-medium mb-2">Description</label>
-          <textarea
-            id="description"
-            name="description"
-            value={projectDetails.description}
-            onChange={handleInputChange}
-            className="w-full border border-gray-300 rounded-md p-2 focus:border-blue-500 focus:ring-blue-500"
-          />
-        </div>
-        {projectDetails.members.length>0 && (<div className="mb-8">
-        <h3 className="text-2xl font-semibold mb-4 text-blue-700">Members</h3>
-        <ul className="list-disc list-inside space-y-2">
-          { projectDetails.members.map((member, idx) => (
-            <li key={idx} className="text-gray-600 flex items-center">
-              <span className="font-medium">{member.userId.name}</span>
-              <span className="ml-2 text-gray-500">
-                ({member.userId.email})
-              </span>
-              <span className="ml-2 bg-yellow-200 text-yellow-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
-                {member.role}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div> )}
-
-     {projectDetails.tasks.length>0 &&( <div className="mb-8">
-        <h3 className="text-2xl font-semibold mb-4 text-green-700">Tasks</h3>
-        <ul className="space-y-4">
-          { projectDetails.tasks.map((task, idx) => (
-            <li
-              key={idx}
-              className="border border-gray-300 rounded-lg p-4 cursor-pointer"
-              onClick={() => handleTaskClick(task)}
+    <div className="flex justify-center  items-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-3xl p-8 bg-white rounded-lg shadow-lg">
+        <h2 className="text-3xl font-bold text-blue-600 mb-6 text-center">
+          Create Project
+        </h2>
+        <form onSubmit={handleSubmit} className="max-w-lg mx-auto">
+          <div className="mb-6">
+            <label
+              htmlFor="name"
+              className="block text-gray-700 font-medium mb-2"
             >
-              <h4 className="font-semibold text-lg mb-2">{task.title}</h4>
-              <p className="text-gray-600">{task.description}</p>
-              <div className="flex items-center justify-between mt-2">
-                <span className="text-sm text-gray-500">
-                  Priority: {task.priority}
-                </span>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>)}
-        <div className="flex justify-between">
-          <button
-            type="button"
-            onClick={handleAddMember}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            Add Member
-          </button>
-          <button
-            type="button"
-            onClick={handleAddTask}
-            className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
-          >
-            Add Task
-          </button>
-        </div>
-        <div className="flex justify-end mt-4">
-          <button
-            type="submit"
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-          >
-            Create Project
-          </button>
-        </div>
-      </form>
-      {showAddMemberDialog && (
-         <AddMemberDialog handleAddMemberSubmit={handleAddMemberSubmit} newMemberEmail={newMemberEmail} setNewMemberEmail={setNewMemberEmail} newMemberRole={newMemberRole} setNewMemberRole={setNewMemberRole} setShowAddMemberDialog={setShowAddMemberDialog} />
-  
-      )}
-      {showAddTaskDialog && (
-        <AddTaskDialog project={projectDetails} taskDetails={taskDetails} setTaskDetails={setTaskDetails} setShowAddTaskDialog={setShowAddTaskDialog} handleAddTaskSubmit={handleAddTaskSubmit}  />
-      )}
-      {selectedTask && (
-        <TaskDetailDialog task={selectedTask} onClose={handleCloseDialog} />
-      )}
+              Project Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={projectDetails.name}
+              onChange={handleInputChange}
+              className="w-full border border-gray-300 rounded-md p-3 focus:border-blue-500 focus:ring focus:ring-blue-200 transition duration-200"
+              required
+            />
+          </div>
+          <div className="mb-6">
+            <label
+              htmlFor="description"
+              className="block text-gray-700 font-medium mb-2"
+            >
+              Description
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              value={projectDetails.description}
+              onChange={handleInputChange}
+              className="w-full border border-gray-300 rounded-md p-3 focus:border-blue-500 focus:ring focus:ring-blue-200 transition duration-200"
+            />
+          </div>
+          {projectDetails.members.length > 0 && (
+            <div className="mb-8">
+              <h3 className="text-2xl font-semibold mb-4 text-blue-700">
+                Members
+              </h3>
+              <ul className="list-disc list-inside space-y-2">
+                {projectDetails.members.map((member, idx) => (
+                  <li key={idx} className="text-gray-600 flex items-center">
+                    <span className="font-medium">{member.userId.name}</span>
+                    <span className="ml-2 text-gray-500">
+                      ({member.userId.email})
+                    </span>
+                    <span className="ml-2 bg-yellow-200 text-yellow-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
+                      {member.role}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {projectDetails.tasks.length > 0 && (
+            <div className="mb-8">
+              <h3 className="text-2xl font-semibold mb-4 text-green-700">
+                Tasks
+              </h3>
+              <ul className="space-y-4">
+                {projectDetails.tasks.map((task, idx) => (
+                  <li
+                    key={idx}
+                    className="border border-gray-300 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition duration-200"
+                    onClick={() => handleTaskClick(task)}
+                  >
+                    <h4 className="font-semibold text-lg mb-2">{task.title}</h4>
+                    <p className="text-gray-600">{task.description}</p>
+                    <div className="flex items-center justify-between mt-2">
+                      <span className="text-sm text-gray-500">
+                        Priority: {task.priority}
+                      </span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <div className="flex justify-between mb-4">
+            <button
+              type="button"
+              onClick={handleAddMember}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200"
+            >
+              Add Member
+            </button>
+            <button
+              type="button"
+              onClick={handleAddTask}
+              className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition duration-200"
+            >
+              Add Task
+            </button>
+          </div>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 transition duration-200"
+            >
+              Create Project
+            </button>
+          </div>
+        </form>
+        {showAddMemberDialog && (
+          <AddMemberDialog
+            handleAddMemberSubmit={handleAddMemberSubmit}
+            newMemberEmail={newMemberEmail}
+            setNewMemberEmail={setNewMemberEmail}
+            newMemberRole={newMemberRole}
+            setNewMemberRole={setNewMemberRole}
+            setShowAddMemberDialog={setShowAddMemberDialog}
+          />
+        )}
+        {showAddTaskDialog && (
+          <AddTaskDialog
+            project={projectDetails}
+            taskDetails={taskDetails}
+            setTaskDetails={setTaskDetails}
+            setShowAddTaskDialog={setShowAddTaskDialog}
+            handleAddTaskSubmit={handleAddTaskSubmit}
+          />
+        )}
+        {selectedTask && (
+          <TaskDetailDialog task={selectedTask} onClose={handleCloseDialog} />
+        )}
+      </div>
     </div>
   );
 };

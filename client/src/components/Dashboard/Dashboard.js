@@ -1,32 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import ProjectList from '../Project/ProjectList';
-import { Link } from 'react-router-dom';
-import { useProjects } from '../../context/ProjectContext';
-import TaskList from '../Task/TaskList';
-// import CreateProject from '../Project/CreateProject';
+import React, { useEffect, useState } from "react";
+import ProjectList from "../Project/ProjectList";
+import { Link, useNavigate } from "react-router-dom";
+import { useProjects } from "../../context/ProjectContext";
+import TaskList from "../Task/TaskList";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../redux/authSlice";
+import DashNavigator from "./DashNavigator";
 
 const Dashboard = () => {
-  const {fetchProjects}=useProjects();
 
-  // useEffect(()=>{
-  //    fetchProjects();
-  // },[])
-
+  const { fetchProjects } = useProjects();
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <Link to="/createProject" className="bg-blue-600 my-4  text-white px-4 py-2 rounded hover:bg-blue-700" >
+    <div className="bg-gray-100 min-h-screen flex justify-center items-center">
+      <div className="container mx-auto">
+       <DashNavigator/>
+       <div>
+        <Link
+          to="/createProject"
+          className="bg-blue-600 text-white float-end mr-8   px-4 py-2 rounded hover:bg-blue-700"
+        >
           Create Project
-        </Link>
+        </Link> 
+       </div>
+        <div className="py-8 px-4 sm:px-6 lg:px-8">
+          
+          <ProjectList />
+        </div>
+        <div className="py-8 px-4 sm:px-6 lg:px-8">
+          <TaskList />
+        </div>
       </div>
-      <ProjectList />
-      {/* <div>
-        Assigned Tasks:
-        <TaskList/>
-      </div> */}
-      
     </div>
   );
 };

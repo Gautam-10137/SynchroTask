@@ -31,7 +31,8 @@ export const ProjectProvider=({children})=>{
     const addProject= async(project)=>{
       try{
         const res=await axiosApi.post('project/create',project);
-        setProjects([...projects,res.data]);
+        fetchProjects();
+        // setProjects([...projects,res.data]);
       }catch(err){
         console.error('Error adding project:'+err.message);
       }

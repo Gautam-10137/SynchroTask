@@ -18,6 +18,7 @@ const ProjectDetail = () => {
   const [newMemberEmail, setNewMemberEmail] = useState("");
   const [newMemberRole, setNewMemberRole] = useState("member");
   const [selectedTask, setSelectedTask] = useState(null);
+  const [showMemberError,setShowMemberError]=useState(false);
   const [taskDetails, setTaskDetails] = useState({
     title: "",
     description: "",
@@ -70,16 +71,19 @@ const ProjectDetail = () => {
 
   const handleAddMemberSubmit = async (e) => {
     e.preventDefault();
+    setShowMemberError(false);
     try {
       const res = await axiosApi.get(`user/detail/${newMemberEmail}`);
       console.log(res.data.user);
-      const newUser = res.data.user;
-      project.members.push({ userId: newUser, role: newMemberRole });
+      const newMember = res.data.user;
+      
+      project.members.push({ userId: newMember, role: newMemberRole });
       await updateProject(project);
       setShowAddMemberDialog(false);
       setNewMemberEmail("");
       setNewMemberRole("member");
     } catch (err) {
+      setShowMemberError(true);
       console.error("Error adding member");
     }
   };
@@ -118,7 +122,7 @@ const ProjectDetail = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-6">
+    <div className="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-6 border-2">
       <h2 className="text-4xl font-bold mb-6 text-center text-purple-700">
         {project.name}
       </h2>
@@ -160,7 +164,7 @@ const ProjectDetail = () => {
         </ul>
       </div>
       {showAddMemberDialog && (
-        <AddMemberDialog handleAddMemberSubmit={handleAddMemberSubmit} newMemberEmail={newMemberEmail} setNewMemberEmail={setNewMemberEmail} newMemberRole={newMemberRole} setNewMemberRole={setNewMemberRole} setShowAddMemberDialog={setShowAddMemberDialog} />
+        <AddMemberDialog showMemberError={showMemberError}  handleAddMemberSubmit={handleAddMemberSubmit} newMemberEmail={newMemberEmail} setNewMemberEmail={setNewMemberEmail} newMemberRole={newMemberRole} setNewMemberRole={setNewMemberRole} setShowAddMemberDialog={setShowAddMemberDialog} />
       )}
 
       {selectedTask && (

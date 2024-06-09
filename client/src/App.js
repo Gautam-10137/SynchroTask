@@ -8,6 +8,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import { ProjectProvider } from './context/ProjectContext';
 import ProjectDetail from './components/Project/ProjectDetail';
 import CreateProject from './components/Project/CreateProject';
+import DashNavigator from './components/Dashboard/DashNavigator';
 function App() {
  
   return (
@@ -25,8 +26,8 @@ function App() {
               {/* <Navigator/> */}
               <Routes>
                 
-                <Route path="/dashboard" element={<div><Navigator page={"Dashboard"} /><Dashboard/></div>} />
-                <Route path="/project/:projectId" element={<div><Navigator page={"ProjectDetail"} /><ProjectDetail /></div>}></Route>
+                <Route path="/dashboard" element={<div><Dashboard/></div>} />
+                <Route path="/project/:projectId" element={<div><DashNavigator/><ProjectDetail /></div>}></Route>
                 <Route path="/createProject"  element={<div><Navigator page={"ProjectDetail"} /><CreateProject/></div>}></Route>
               </Routes>
             </ProjectProvider>
