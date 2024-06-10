@@ -18,8 +18,8 @@ const DashNavigator = () => {
         SynchroTask
       </Link>
       <Link to="/dashboard" className="text-3xl font-bold text-white">My Dashboard</Link>
-      <div className="flex items-center space-x-4">
-        <span>Hello, {user.name}</span>
+      <div className="flex items-center space-x-4 text-white">
+        <span className=" text-lg font-medium"> Hello, {user.name}</span>
         <button
           onClick={handleLogout}
           className="text-red-300 hover:text-red-500 transition duration-300"

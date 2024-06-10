@@ -13,12 +13,14 @@ const CreateProject = () => {
   const _id=user.id;
   const {id,...rest}=user;
   user={_id,...rest};
+  
   const [projectDetails, setProjectDetails] = useState({
     name: '',
     description: '',
     members: [{userId:user,role:'admin'}],
     tasks: [],
   });
+
   const Navigate=useNavigate();
   const [showAddMemberDialog, setShowAddMemberDialog] = useState(false);
   const [showAddTaskDialog, setShowAddTaskDialog] = useState(false);

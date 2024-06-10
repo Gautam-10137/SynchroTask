@@ -13,6 +13,7 @@ const ProjectList = () => {
 
   return (
     <section className="mt-4 py-8 px-4 sm:px-6 lg:px-8 bg-gray-300">
+      
       <div className="container mx-auto">
       <h1 className="text-3xl font-bold mb-4 text-center text-purple-700">My Projects</h1>
 
