@@ -6,6 +6,7 @@ import axiosApi from "../../axios/api";
 import TaskDetailDialog from "../DialogBox/TaskDetailDialog";
 import AddTaskDialog from "../DialogBox/AddTaskDialog";
 import AddMemberDialog from "../DialogBox/AddMemberDialog";
+import Chat from "../Chat/Chat";
 
 const ProjectDetail = () => {
   const { projectId } = useParams();
@@ -31,6 +32,8 @@ const ProjectDetail = () => {
 
 
   useEffect(() => {
+    console.log("projectID:");
+    console.log(projectId);
     if (projects.length > 0) {
       console.log("params", projectId);
       const foundProject = projects.find((proj) => proj._id === projectId);
@@ -192,6 +195,9 @@ const ProjectDetail = () => {
       {showAddTaskDialog && (
         <AddTaskDialog project={project} taskDetails={taskDetails} setTaskDetails={setTaskDetails} setShowAddTaskDialog={setShowAddTaskDialog} handleAddTaskSubmit={handleAddTaskSubmit}  />
       )}
+
+     <Chat projectID={projectId} />
+
     </div>
   );
 };

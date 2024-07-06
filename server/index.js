@@ -12,10 +12,10 @@ const handleSocketConnection=require('./services/SocketHandler');
 
 const app= express();
 const socketServer= http.createServer(app);
-const io=socketIO(socketServer,{
-    cors:{
-        origin:'http://localhost:3000',
-        methods:['GET','POST']
+const io = socketIO(socketServer, {
+    cors: {
+        origin: ['http://127.0.0.1:3000', 'http://localhost:3000'],
+        methods: ['GET', 'POST']
     }
 });
 
@@ -40,6 +40,7 @@ app.use(cors({
 handleSocketConnection(io);
 
 app.use('/api',route);
-app.listen(PORT,()=>{
-    console.log("Server is listening on port: "+PORT);
+
+socketServer.listen(PORT, () => {
+    console.log("Server is listening on port: " + PORT);
 });
