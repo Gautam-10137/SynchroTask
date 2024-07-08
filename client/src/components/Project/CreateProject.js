@@ -65,7 +65,6 @@ const CreateProject = () => {
     e.preventDefault();
     try {
       const res = await axiosApi.get(`user/detail/${newMemberEmail}`);
-      console.log(res.data.user);
       const newUser = res.data.user;
       projectDetails.members.push({ userId: newUser, role: newMemberRole });
       setShowAddMemberDialog(false);

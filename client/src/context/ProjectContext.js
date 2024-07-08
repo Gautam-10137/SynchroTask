@@ -13,9 +13,7 @@ export const ProjectProvider=({children})=>{
       setLoading(true);
       try {
         const user = getUser();
-        console.log("user:" + user.id);
         const res = await axiosApi.get(`project/get/${user.id}`);
-        console.log("fetchProjects", res.data);
         setProjects(res.data.projects);
       } catch (err) {
         console.error('Error fetching projects.');
@@ -32,7 +30,6 @@ export const ProjectProvider=({children})=>{
       try{
         const res=await axiosApi.post('project/create',project);
         fetchProjects();
-        // setProjects([...projects,res.data]);
       }catch(err){
         console.error('Error adding project:'+err.message);
       }
@@ -46,8 +43,7 @@ export const ProjectProvider=({children})=>{
         setProjects(projects.map((project)=>(
            project._id===projectId?updatedProject:project
         )));
-        console.log("updated projects");
-        console.log(projects[0]);
+        
       }catch(err){
         console.error('Error updating project');
       }

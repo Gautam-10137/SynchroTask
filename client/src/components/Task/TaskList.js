@@ -13,18 +13,15 @@ const TaskList = () => {
   useEffect(() => {
     const fetchAssignedTasks = async () => {
       try {
-        console.log("user asiigned:" +user.id);
+        
         const res = await axiosApi.get(`/task/assigned-to/${user.id}`);
-        console.log(res.data);
         setTasks(res.data.tasks);
-        console.log(tasks);
       } catch (err) {
         setError("Error fetching tasks");
       } finally {
         setLoading(false);
       }
     };
-
     fetchAssignedTasks();
   }, [user]);
 

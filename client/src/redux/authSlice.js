@@ -83,7 +83,7 @@ export const register=({name,email,password})=> async(dispatch)=>{
     
     try{
         const res= await axiosApi.post('user/auth/register',body);
-        console.log(res.data);
+        
         dispatch(registerSuccess(res.data));
     }
     catch(err){
@@ -97,11 +97,8 @@ export const login=({email,password})=>async(dispatch)=>{
 
     try{
         const res=await axiosApi.post('user/auth/login',body);
-        console.log(res.data);
         dispatch(loginSuccess(res.data));
-        dispatch(loadUser());
-        
-
+        dispatch(loadUser());  
     }
     catch(err){
         dispatch(authError());

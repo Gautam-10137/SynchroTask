@@ -12,7 +12,7 @@ const ProjectDetail = () => {
   const { projectId } = useParams();
   const { projects } = useProjects();
   const [project, setProject] = useState(null);
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const {  user } = useSelector((state) => state.auth);
   const [userRole, setUserRole] = useState(null);
   const [showAddMemberDialog, setShowAddMemberDialog] = useState(false);
   const [showAddTaskDialog, setShowAddTaskDialog] = useState(false);
@@ -33,20 +33,16 @@ const ProjectDetail = () => {
   const chatRef= useRef(null);
 
   useEffect(() => {
-    console.log("projectID:");
-    console.log(projectId);
+
     if (projects.length > 0) {
-      console.log("params", projectId);
       const foundProject = projects.find((proj) => proj._id === projectId);
-      console.log("foundProject");
-      console.log(foundProject);
-      console.log(user);
+      
       if (foundProject) {
         setProject(foundProject);
         const member = foundProject.members.find(
           (member) => member.userId._id === user.id
         );
-        console.log("member:", member);
+      
         if (member) {
           setUserRole(member.role);
         } else {
@@ -61,7 +57,6 @@ const ProjectDetail = () => {
   }, [projects, projectId]);
 
   const handleTaskClick = (task) => {
-    console.log("handle",task);
     setSelectedTask(task);
   };
 
@@ -78,7 +73,6 @@ const ProjectDetail = () => {
     setShowMemberError(false);
     try {
       const res = await axiosApi.get(`user/detail/${newMemberEmail}`);
-      console.log(res.data.user);
       const newMember = res.data.user;
       
       project.members.push({ userId: newMember, role: newMemberRole });
@@ -126,7 +120,6 @@ const ProjectDetail = () => {
     setShowChat(prevShowChat=> !prevShowChat);
     
     if (chatRef.current) {
-      console.log(!showChat);
       chatRef.current.scrollIntoView({ behavior: 'smooth' });
     }
     else{
@@ -152,11 +145,11 @@ const ProjectDetail = () => {
     <h2 className="text-4xl font-bold mb-6 text-center text-purple-700">
       {project.name}
     </h2>
-    <p className="text-gray-700 mb-6 text-center">{project.description}</p>
+    <p className="text-gray-700 mb-6 text-center ">{project.description}</p>
     <div className="mb-8">
       <h3 className="text-2xl font-semibold mb-4 text-blue-700">Members</h3>
       <ul className="list-disc list-inside space-y-2">
-        {project.members.map((member, idx) => (
+        {project.members.length? project.members.map((member, idx) => (
           <li key={idx} className="text-gray-600 flex items-center">
             <span className="font-medium">{member.userId.name}</span>
             <span className="ml-2 text-gray-500">
@@ -166,13 +159,13 @@ const ProjectDetail = () => {
               {member.role}
             </span>
           </li>
-        ))}
+        )):<p className=" text-2xl">No members are added.</p>}
       </ul>
     </div>
     <div className="mb-8">
       <h3 className="text-2xl font-semibold mb-4 text-green-700">Tasks</h3>
       <ul className="space-y-4">
-        {project.tasks.map((task, idx) => (
+        {project.tasks.length?project.tasks.map((task, idx) => (
           <li
             key={idx}
             className="border border-gray-300 rounded-lg p-4 cursor-pointer"
@@ -186,7 +179,7 @@ const ProjectDetail = () => {
               </span>
             </div>
           </li>
-        ))}
+        )):<p className=" text-2xl"> No tasks are assigned.</p>}
       </ul>
     </div>
     {showAddMemberDialog && (

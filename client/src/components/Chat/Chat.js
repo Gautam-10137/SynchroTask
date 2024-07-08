@@ -20,13 +20,11 @@ const Chat = ({projectID}) => {
 
     newSocket.on('receiveMessage', (message) => {
         // Handle received message logic here
-        console.log('Received message:', message);
         setMessages((prevMessages) => [...prevMessages, message]);
       });
 
     return ()=>{
       newSocket.disconnect();
-    //   newSocket.off('receiveMessage', receiveMessageHandler);
     }
 
   },[projectID]);
@@ -40,7 +38,6 @@ const Chat = ({projectID}) => {
         senderID: user.id,
         content: newMessage
       };
-    //   console.log(message);
       socket.emit("sendMessage", message);
       setNewMessage("");
     }

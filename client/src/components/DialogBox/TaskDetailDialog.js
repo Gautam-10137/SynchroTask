@@ -1,8 +1,7 @@
 import React from 'react';
 
 const TaskDetailDialog = ({ task, onClose }) => {
-  console.log("task");
-  console.log(task);
+
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-black bg-opacity-50">
       <div className="bg-white p-8 rounded shadow-lg max-w-md">

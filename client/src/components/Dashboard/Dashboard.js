@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ProjectList from "../Project/ProjectList";
-import { Link, useNavigate } from "react-router-dom";
-import { useProjects } from "../../context/ProjectContext";
+import { Link } from "react-router-dom";
 import TaskList from "../Task/TaskList";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../redux/authSlice";
 import DashNavigator from "./DashNavigator";
 
 const Dashboard = () => {
-
-  const { fetchProjects } = useProjects();
 
   return (
     <div className="bg-gray-100 min-h-screen flex justify-center items-center">

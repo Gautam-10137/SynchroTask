@@ -33,11 +33,6 @@ function App() {
             </ProjectProvider>
           </div>
 
-
-          
-      
-      
-      
       </BrowserRouter>
 
     </div>
