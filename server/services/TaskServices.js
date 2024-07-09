@@ -98,6 +98,25 @@ const TaskServices = {
       throw err;
     }
   },
+  updateTaskFromDB: async(taskId,updatedDetails)=>{
+    try{
+      
+        const updatedTask= await Task.findByIdAndUpdate(taskId,{
+          $set:updatedDetails
+        },{new:true,runValidators:true});
+      
+       if(!updatedTask){
+        return res.status(400).send({message:'Invalid task details'});
+       }
+       return updatedTask;
+         
+       
+    }catch(err){
+      console.error("Error task updating");
+      throw err;
+    }
+
+  }
 };
 
 module.exports = TaskServices;

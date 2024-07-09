@@ -72,6 +72,20 @@ const TaskController = {
         console.error('Error removing assignee');
         res.status(500).send({message:'Error removing assignee'});
     }
+  },
+  updateTask: async(req,res)=>{
+    try{
+      const {taskId}=req.params;
+      const updatedDetails=req.body;
+
+      const updatedTask= await TaskServices.updateTaskFromDB(taskId,updatedDetails);
+
+      res.status(201).send({updatedTask});
+    }
+    catch(err){
+      console.error('Error updating task');
+      res.status(500).send({message:'Error updating task'});
+    }
   }
 };
 

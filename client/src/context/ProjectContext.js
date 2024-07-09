@@ -15,6 +15,7 @@ export const ProjectProvider=({children})=>{
         const user = getUser();
         const res = await axiosApi.get(`project/get/${user.id}`);
         setProjects(res.data.projects);
+       
       } catch (err) {
         console.error('Error fetching projects.');
       } finally {
@@ -24,6 +25,8 @@ export const ProjectProvider=({children})=>{
   
     useEffect(() => {
       fetchProjects();
+
+      
     }, [fetchProjects]);
 
     const addProject= async(project)=>{

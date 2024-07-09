@@ -8,5 +8,6 @@ router.post('/:taskId/assignee',TaskController.addAssignee);
 router.delete('/:taskId/assignee',TaskController.removeAssignee);
 router.get('/assigned-to/:userId',TaskController.fetchTasks);
 router.put('/:taskId/status',TaskController.updateStatus);
+router.put('/update/:taskId',TaskController.updateTask);
 
 module.exports=router;

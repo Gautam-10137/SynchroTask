@@ -7,15 +7,17 @@ import TaskDetailDialog from "../DialogBox/TaskDetailDialog";
 import AddTaskDialog from "../DialogBox/AddTaskDialog";
 import AddMemberDialog from "../DialogBox/AddMemberDialog";
 import Chat from "../Chat/Chat";
+import EditProjectDialog from "../DialogBox/EditProjectDialog";
 
 const ProjectDetail = () => {
   const { projectId } = useParams();
-  const { projects } = useProjects();
+  const { projects} = useProjects();
   const [project, setProject] = useState(null);
   const {  user } = useSelector((state) => state.auth);
   const [userRole, setUserRole] = useState(null);
   const [showAddMemberDialog, setShowAddMemberDialog] = useState(false);
   const [showAddTaskDialog, setShowAddTaskDialog] = useState(false);
+  const [showEditProjectDialog, setShowEditProjectDialog] = useState(false);
   const [newMemberEmail, setNewMemberEmail] = useState("");
   const [newMemberRole, setNewMemberRole] = useState("member");
   const [selectedTask, setSelectedTask] = useState(null);
@@ -127,6 +129,45 @@ const ProjectDetail = () => {
     }
     
   }
+  const handleEditProjectClick = () => {
+    setShowEditProjectDialog(true);
+  };
+  const handleEditProjectSave = async (updatedProjectDetails) => {
+    try {
+      const updatedProject = {
+        ...project,
+        name: updatedProjectDetails.name,
+        description: updatedProjectDetails.description,
+      };
+      await updateProject(updatedProject);
+      setProject(updatedProject);
+      setShowEditProjectDialog(false);
+    } catch (err) {
+      console.error("Error updating project:", err);
+    }
+  };
+
+  const handleSaveTaskDetails = async (updatedTask) => {
+
+    const taskId=updatedTask._id;
+
+    
+    try{
+      const res= await axiosApi.put(`task/update/${taskId}`,updatedTask);
+
+    }catch(err){
+      console.error('Error Saving/Updating Task');
+    }
+    
+    const updatedTasks = project.tasks.map((t) =>
+      t._id === updatedTask._id ? updatedTask : t
+    );
+
+    const updatedProject = { ...project, tasks: updatedTasks };
+    await updateProject(updatedProject);
+    setProject(updatedProject);
+    setSelectedTask(null);
+  };
 
   if (!project) {
     return <p className="text-gray-700">No project selected.</p>;
@@ -134,7 +175,11 @@ const ProjectDetail = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg mt-6 border-2 relative">
-    <div className="flex justify-end">
+    <div className="flex justify-end space-x-4">
+      <button
+         className="  h-full border-2 p-2 rounded-full hover:bg-gray-200"
+         onClick={handleEditProjectClick}
+      ><img src={require('../../static/edit.png')} alt="edit" className="h-8 w-8" ></img></button>
       <button
         className="  h-full border-2 p-2 rounded-full hover:bg-gray-200"
         onClick={handleChatIconClick}
@@ -195,7 +240,11 @@ const ProjectDetail = () => {
     )}
 
     {selectedTask && (
-      <TaskDetailDialog task={selectedTask} onClose={handleCloseDialog} />
+      <TaskDetailDialog
+      task={selectedTask}
+      onClose={handleCloseDialog}
+      onSave={handleSaveTaskDetails}
+    />
     )}
 
     {(userRole === "admin" || userRole === "manager") && (
@@ -225,9 +274,16 @@ const ProjectDetail = () => {
       />
     )}
     
-    {/* {showChat &&  */}
+    {showEditProjectDialog && (
+        <EditProjectDialog
+          project={project}
+          onClose={() => setShowEditProjectDialog(false)}
+          onSave={handleEditProjectSave}
+        />
+      )}
+    
     <div ref={ chatRef } className="mt-4"> <Chat projectID={projectId}  /></div>
-     {/* } */}
+
 
   </div>
   );
