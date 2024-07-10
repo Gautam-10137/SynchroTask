@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../redux/authSlice";
@@ -7,7 +7,10 @@ const DashNavigator = () => {
     const { user } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-  
+   useEffect(()=>{
+     console.log(user);
+   },[]);
+   
     const handleLogout = () => {
       dispatch(logout());
       navigate("/");
@@ -19,7 +22,7 @@ const DashNavigator = () => {
       </Link>
       <Link to="/dashboard" className="text-3xl font-bold text-white">My Dashboard</Link>
       <div className="flex items-center space-x-4 text-white">
-        <span className=" text-lg font-medium"> Hello, {user.name}</span>
+        {user?<span className=" text-lg font-medium"> Hello, {user.name}</span>:<></>}
         <button
           onClick={handleLogout}
           className="text-red-300 hover:text-red-500 transition duration-300"

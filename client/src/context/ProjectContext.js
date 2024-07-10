@@ -1,6 +1,7 @@
 import React, {createContext, useState, useContext, useEffect, useCallback } from 'react';
 import axiosApi from '../axios/api';
 import { getUser } from '../utils/utils';
+import { useSelector } from 'react-redux';
 
 const ProjectContext= createContext();
 
@@ -8,6 +9,7 @@ export const useProjects=()=>useContext(ProjectContext);
 
 export const ProjectProvider=({children})=>{
     const [projects,setProjects]=useState([]);
+    const {user}=useSelector((state)=>state.auth);
     const [loading,setLoading]=useState(false);
     const fetchProjects = useCallback(async () => {
       setLoading(true);
@@ -28,7 +30,7 @@ export const ProjectProvider=({children})=>{
 
       
     }, [fetchProjects]);
-
+    
     const addProject= async(project)=>{
       try{
         const res=await axiosApi.post('project/create',project);

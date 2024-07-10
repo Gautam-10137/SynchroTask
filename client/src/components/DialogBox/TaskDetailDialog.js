@@ -11,6 +11,8 @@ const TaskDetailDialog = ({ task, onClose, onSave }) => {
     dueDate: task.dueDate,
     _id:task._id
   });
+  const [isAddComment,setIsAddComment]=useState(false);
+  const [newComment,setNewComment]=useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -24,6 +26,10 @@ const TaskDetailDialog = ({ task, onClose, onSave }) => {
     onSave(editedTask);
     setIsEditing(false);
   };
+
+  const handleAddCommentClick=()=>{
+    setIsAddComment(true);
+  }
 
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-black bg-opacity-50">
@@ -112,12 +118,33 @@ const TaskDetailDialog = ({ task, onClose, onSave }) => {
             <ul className="list-disc list-inside mb-2">
               {task.assignedTo.map((user, index) => (
                 <li key={index} className="text-gray-600">
-                  {user.name}
+                  {user.name}({user.email})
                 </li>
               ))}
             </ul>
             <p className="text-gray-700 mb-2"><strong>Due Date:</strong> {task.dueDate}</p>
+            {/* <ul>
+              {task.commments.map((comment,idx)=>(
+                <li>
+                  <strong>{comment.author}:</strong>{comment.content}
+                </li>
+              ))}
+            </ul> */}
+            {isAddComment?<div>
+              <label className="block mb-2">
+              New Comment:
+              <textarea
+                name="newComment"
+                value={newComment}
+                onChange={(e)=>{setNewComment(e.target.value)}}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </label>
+            </div>:<></>}
             <div className="flex justify-end space-x-4">
+              <button
+                className="bg-green-500 text-white px-4 py-2 rounded mr-2 hover:bg-green-600"
+              >Add Comment </button>
               <button
                 onClick={() => setIsEditing(true)}
                 className="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:bg-blue-600"

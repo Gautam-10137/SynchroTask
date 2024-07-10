@@ -22,10 +22,8 @@ const Navigator = ({ page }) => {
           </Link>
         </div>
         <div className="text-xl font-semibold flex space-x-8">
-          <Link to="/" className="hover:text-gray-300 transition duration-300">
-            Home
-          </Link>
-          <Link to="/dashboard" className="hover:text-gray-300 transition duration-300">
+         
+          <Link to="/dashboard" className="hover:text-gray-300 text-2xl transition duration-300">
             Dashboard
           </Link>
         </div>
@@ -40,7 +38,7 @@ const Navigator = ({ page }) => {
               </Link>
             </div>
           ) : (
-            <div className="flex items-center space-x-4 ">
+            <div className="flex items-center space-x-4  text-xl mx-2">
               <span>Hello, {user.name}</span>
               <button onClick={handleLogout} className="text-red-300 mr-2 hover:text-red-500 transition duration-300">
                 Logout

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import axiosApi from "../../axios/api";
 import { useSelector } from "react-redux";
 import TaskDetailDialog from "../DialogBox/TaskDetailDialog";
-
+import { loadUser } from "../../redux/authSlice";
 const TaskList = () => {
   const { user } = useSelector((state) => state.auth);
+  
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -23,7 +24,7 @@ const TaskList = () => {
       }
     };
     fetchAssignedTasks();
-  }, [user]);
+  }, [user,tasks]);
 
   const handleTaskClick = (task) => {
     setSelectedTask(task);

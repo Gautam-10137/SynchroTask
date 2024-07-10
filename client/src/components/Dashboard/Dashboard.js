@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ProjectList from "../Project/ProjectList";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TaskList from "../Task/TaskList";
 import DashNavigator from "./DashNavigator";
-
+import { useSelector } from "react-redux";
+import { loadUser } from "../../redux/authSlice";
 const Dashboard = () => {
-
+  const {isAuthenticated,user}=useSelector((state)=>state.auth);
+  const Navigate=useNavigate();
+  useEffect(()=>{
+     checkIsAuth();
+     
+  },[]);
+  const checkIsAuth=()=>{
+    if(!isAuthenticated || !user){
+      const token=localStorage.getItem("token");
+      if(token){
+        loadUser();
+        return;
+      }
+      Navigate('/login');
+     }
+     console.log(user);
+  }
   return (
     <div className="bg-gray-100 min-h-screen flex justify-center items-center">
       <div className="container mx-auto">
