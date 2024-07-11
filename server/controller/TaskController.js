@@ -44,8 +44,8 @@ const TaskController = {
       
       const {taskId}=req.params;
       const  detail=req.body;
-      const task=await TaskServices.addComment(taskId,detail);
-      res.status(200).send({task});
+      const newComment=await TaskServices.addComment(taskId,detail);
+      res.status(200).send({newComment});
     }catch(err){
         console.error('Error adding comment.');
         res.status(500).send({message:'Error adding comment'});

@@ -14,43 +14,63 @@ const ProjectServices = {
       throw err;
     }
   },
-  fetchProjectFromDB: async(userId)=>{
-    try{
-      const projects=await Project.find({'members.userId':userId}).populate('members.userId').populate({
-        path: 'tasks',
-        populate: {
-          path: 'assignedTo',
-          model: 'User'
-        }
-      });;
+  fetchProjectFromDB: async (userId) => {
+    try {
+      const projects = await Project.find({ "members.userId": userId })
+        .populate({
+          path:"members.userId",
+          model:"User"
+         })
+        .populate({
+          path: "tasks",
+          populate: [
+          {
+            path: "assignedTo",
+            model: "User",
+          },
+          {
+            path: "comments",
+            model: "Comment",
+            populate: {
+              path: "author",
+              model: "User",
+            }
+          }
+        ]
+        });
+        
       return projects;
-    }catch(err){
-      console.error('Error fetching projects :'+err.message);
+    } catch (err) {
+      console.error("Error fetching projects :" + err.message);
     }
   },
-  updateProjectFromDB:async(projectId,updateDetails)=>{
-    try{
-      const updatedProject= await Project.findByIdAndUpdate(projectId,{
-        $set: updateDetails
-      },{new:true,runValidators:true});
-    
-      if(!updatedProject){
-        throw new Error('Project not found!');
+  updateProjectFromDB: async (projectId, updateDetails) => {
+    try {
+      const updatedProject = await Project.findByIdAndUpdate(
+        projectId,
+        {
+          $set: updateDetails,
+        },
+        { new: true, runValidators: true }
+      );
+
+      if (!updatedProject) {
+        throw new Error("Project not found!");
       }
       return updatedProject;
-    }catch(err){
-      console.error('Error updating project :'+err.message);
+    } catch (err) {
+      console.error("Error updating project :" + err.message);
     }
   },
-  removeProjectFromDB:async(projectId)=>{
-    try{
-      const project=await Project.findByIdAndDelete(projectId);
-      if(!project){
-        throw new Error('Project not found');
+  removeProjectFromDB: async (projectId) => {
+    try {
+      const project = await Project.findByIdAndDelete(projectId);
+      if (!project) {
+        throw new Error("Project not found");
       }
       return project;
-    }catch(err){
-      console.error('Error removing project');
+    } catch (err) {
+      console.error("Error removing project");
     }
   },
   addMemberToProject: async (projectId, userId, role) => {

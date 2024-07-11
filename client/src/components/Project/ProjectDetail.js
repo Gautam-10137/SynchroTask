@@ -29,6 +29,7 @@ const ProjectDetail = () => {
     priority: "medium",
     assignedTo: [],
     dueDate: "",
+  
   });
   const { updateProject } = useProjects();
   const [showChat,setShowChat]=useState(false);
@@ -244,6 +245,7 @@ const ProjectDetail = () => {
       task={selectedTask}
       onClose={handleCloseDialog}
       onSave={handleSaveTaskDetails}
+      userRole={userRole}
     />
     )}
 

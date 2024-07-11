@@ -2,8 +2,7 @@ const ChatMessage = require("../model/ChatMessage");
 
 const handleSocketConnection = async (io) => {
   io.on("connection", async (socket) => {
-    console.log("A User is connected");
-
+    
     try {
       // handle joining room specific to project
       socket.on("joinProject", (projectID) => {
@@ -30,14 +29,11 @@ const handleSocketConnection = async (io) => {
             return ChatMessage.findById(savedMessage._id).populate('senderID').exec();
           })
           .then((populatedMessage) => {
-            
             io.to(message.projectID).emit('receiveMessage', populatedMessage);
-            // console.log(message.projectID);
           })
           .catch((error) => {
             console.error("Error saving messages");
           });
-        // console.log(message);
       });
     } catch (error) {
       console.error("Error occured during socket connection");

@@ -57,7 +57,10 @@ const TaskServices = {
         },
         { new: true }
       );
-      return updatedTask;
+      const comment= await Comment.findOne({_id:newComment._id}).populate('author');
+
+    
+      return comment;
     } catch (err) {
       console.error("Error adding comment.");
     }

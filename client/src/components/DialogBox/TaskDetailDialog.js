@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import axiosApi from '../../axios/api';
+import { useSelector } from 'react-redux';
+import { useProjects } from '../../context/ProjectContext';
 
-const TaskDetailDialog = ({ task, onClose, onSave }) => {
+const TaskDetailDialog = ({ task, onClose, onSave, userRole }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const { user } = useSelector((state) => state.auth);
   const [editedTask, setEditedTask] = useState({
     title: task.title,
     description: task.description,
@@ -9,10 +13,15 @@ const TaskDetailDialog = ({ task, onClose, onSave }) => {
     status: task.status,
     assignedTo: task.assignedTo,
     dueDate: task.dueDate,
-    _id:task._id
+    comments: task.comments,
+    _id: task._id,
   });
-  const [isAddComment,setIsAddComment]=useState(false);
-  const [newComment,setNewComment]=useState('');
+  console.log("edited task");
+  console.log(editedTask);
+
+  const { fetchProjects,updateTaskInProject } = useProjects();
+  const [isAddComment, setIsAddComment] = useState(false);
+  const [newComment, setNewComment] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -27,13 +36,47 @@ const TaskDetailDialog = ({ task, onClose, onSave }) => {
     setIsEditing(false);
   };
 
-  const handleAddCommentClick=()=>{
+  const handleAddCommentClick = () => {
     setIsAddComment(true);
-  }
+  };
+
+  const handleAddComment = async () => {
+    try {
+      const comment = { author: user.id, content: newComment };
+      const res = await axiosApi.post(`task/${task._id}/comment`, comment, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      console.log("response");
+      console.log(res.data);
+
+      const updatedTask = {
+        ...editedTask,
+        comments: [...editedTask.comments, res.data.newComment],
+      };
+  
+      // Update local state with the updatedTask
+      setEditedTask(updatedTask);
+  
+      // Update task in the project context
+      updateTaskInProject(updatedTask);
+  
+      // Save the editedTask (if needed)
+      onSave(updatedTask);
+  
+      // Clear newComment field and reset state
+      setIsAddComment(false);
+      setNewComment('');
+      console.log("edited");
+      console.log(editedTask);
+      
+    } catch (err) {
+      console.error('Error adding comment:', err.message);
+    }
+  };
 
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-black bg-opacity-50">
-      <div className="bg-white p-8 rounded shadow-lg max-w-md">
+      <div className="bg-white p-8 rounded shadow-lg max-w-md max-h-full overflow-y-auto">
         {isEditing ? (
           <>
             <h3 className="text-2xl font-semibold mb-4">Edit Task</h3>
@@ -110,50 +153,89 @@ const TaskDetailDialog = ({ task, onClose, onSave }) => {
         ) : (
           <>
             <h3 className="text-2xl font-semibold mb-4">{task.title}</h3>
-            <p className="text-gray-700 mb-2"><strong>Description:</strong></p>
+            <p className="text-gray-700 mb-2">
+              <strong>Description:</strong>
+            </p>
             <p className="text-gray-600 mb-4">{task.description}</p>
-            <p className="text-gray-700 mb-2"><strong>Priority:</strong> {task.priority}</p>
-            <p className="text-gray-700 mb-2"><strong>Status:</strong> {task.status}</p>
-            <p className="text-gray-700 mb-2"><strong>Assigned To:</strong></p>
+            <p className="text-gray-700 mb-2">
+              <strong>Priority:</strong> {task.priority}
+            </p>
+            <p className="text-gray-700 mb-2">
+              <strong>Status:</strong> {task.status}
+            </p>
+            <p className="text-gray-700 mb-2">
+              <strong>Assigned To:</strong>
+            </p>
             <ul className="list-disc list-inside mb-2">
               {task.assignedTo.map((user, index) => (
                 <li key={index} className="text-gray-600">
-                  {user.name}({user.email})
+                  {user.name} ({user.email})
                 </li>
               ))}
             </ul>
-            <p className="text-gray-700 mb-2"><strong>Due Date:</strong> {task.dueDate}</p>
-            {/* <ul>
-              {task.commments.map((comment,idx)=>(
-                <li>
-                  <strong>{comment.author}:</strong>{comment.content}
-                </li>
-              ))}
-            </ul> */}
-            {isAddComment?<div>
-              <label className="block mb-2">
-              New Comment:
-              <textarea
-                name="newComment"
-                value={newComment}
-                onChange={(e)=>{setNewComment(e.target.value)}}
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-            </label>
-            </div>:<></>}
-            <div className="flex justify-end space-x-4">
-              <button
-                className="bg-green-500 text-white px-4 py-2 rounded mr-2 hover:bg-green-600"
-              >Add Comment </button>
-              <button
-                onClick={() => setIsEditing(true)}
-                className="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:bg-blue-600"
-              >
-                Edit
-              </button>
+            <p className="text-gray-700 mb-2">
+              <strong>Due Date:</strong> {task.dueDate}
+            </p>
+            <div>
+              <p className="text-gray-700 mb-2">
+                <strong>Comments:</strong>
+              </p>
+              <div className="max-h-40 overflow-y-auto mb-2">
+                <ul className="space-y-2">
+                  {editedTask.comments && editedTask.comments.length > 0 ? (
+                    editedTask.comments.map((comment, idx) => (
+                      <li
+                        key={idx}
+                        className="text-gray-700 bg-gray-100 p-2 rounded shadow-sm"
+                      >
+                        <strong>{comment.author.name}:</strong> {comment.content}
+                      </li>
+                    ))
+                  ) : (
+                    <p className="text-gray-500">No comments yet.</p>
+                  )}
+                </ul>
+              </div>
+              {isAddComment && (
+                <div className="mt-4">
+                  <label className="block mb-2">
+                    New Comment:
+                    <textarea
+                      name="newComment"
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                      className="w-full p-2 border border-gray-300 rounded"
+                    />
+                  </label>
+                  <button
+                    className="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                    onClick={handleAddComment}
+                  >
+                    Add
+                  </button>
+                </div>
+              )}
+              {!isAddComment && (
+                <button
+                  onClick={handleAddCommentClick}
+                  className="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                >
+                  Add Comment
+                </button>
+              )}
+            </div>
+            <div className="flex justify-end space-x-4 mt-4">
+              {(userRole === 'admin' || userRole === 'manager') && (
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                >
+                  Edit
+                </button>
+              )}
               <button
                 onClick={onClose}
-                className="bg-red-500 text-white px-4 py-2 rounded mr-2 hover:bg-red-600"
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
               >
                 Close
               </button>

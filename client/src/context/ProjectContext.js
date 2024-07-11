@@ -21,6 +21,21 @@ export const ProjectProvider = ({ children }) => {
     return storedProjects ? JSON.parse(storedProjects) : [];
   };
 
+  const updateTaskInProject = (updatedTask) => {
+    setProjects((prevProjects) =>
+      prevProjects.map((project) =>
+        project.tasks.some((task) => task._id === updatedTask._id)
+          ? {
+              ...project,
+              tasks: project.tasks.map((task) =>
+                task._id === updatedTask._id ? updatedTask : task
+              ),
+            }
+          : project
+      )
+    );
+  };
+
   const fetchProjects = useCallback(async () => {
     setLoading(true);
     try {
@@ -74,7 +89,7 @@ export const ProjectProvider = ({ children }) => {
   };
 
   return (
-    <ProjectContext.Provider value={{ projects, fetchProjects, addProject, updateProject, removeProject }}>
+    <ProjectContext.Provider value={{ projects, fetchProjects, addProject, updateProject, removeProject, updateTaskInProject }}>
       {children}
     </ProjectContext.Provider>
   );
