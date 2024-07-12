@@ -36,6 +36,8 @@ export const ProjectProvider = ({ children }) => {
     );
   };
 
+  
+
   const fetchProjects = useCallback(async () => {
     setLoading(true);
     try {

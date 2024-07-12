@@ -139,6 +139,7 @@ const ProjectDetail = () => {
         ...project,
         name: updatedProjectDetails.name,
         description: updatedProjectDetails.description,
+        members: updatedProjectDetails.members
       };
       await updateProject(updatedProject);
       setProject(updatedProject);
@@ -172,6 +173,18 @@ const ProjectDetail = () => {
 
   if (!project) {
     return <p className="text-gray-700">No project selected.</p>;
+  }
+
+  const handleTaskRemove=async (taskId)=>{
+      setProject(prevState=({...prevState,tasks:prevState.tasks.filter(curr=>curr._id!=taskId)}));
+      await updateProject(project);
+      try{
+        
+        
+      }catch(err){
+        console.error("Error removing task");
+      }
+
   }
 
   return (

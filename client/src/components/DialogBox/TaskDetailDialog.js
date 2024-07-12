@@ -74,6 +74,10 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole }) => {
     }
   };
 
+  const handleRemoveTask=()=>{
+
+  };
+
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-black bg-opacity-50">
       <div className="bg-white p-8 rounded shadow-lg max-w-md max-h-full overflow-y-auto">
@@ -225,7 +229,17 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole }) => {
               )}
             </div>
             <div className="flex justify-end space-x-4 mt-4">
+            {(userRole === 'admin' || userRole === 'manager') && (
+                
+                <button
+                  onClick={handleRemoveTask}
+                  className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                >
+                  Remove
+                </button>
+              )}
               {(userRole === 'admin' || userRole === 'manager') && (
+                
                 <button
                   onClick={() => setIsEditing(true)}
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
