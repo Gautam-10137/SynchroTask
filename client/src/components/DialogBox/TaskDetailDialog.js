@@ -3,7 +3,7 @@ import axiosApi from '../../axios/api';
 import { useSelector } from 'react-redux';
 import { useProjects } from '../../context/ProjectContext';
 
-const TaskDetailDialog = ({ task, onClose, onSave, userRole }) => {
+const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove}) => {
   const [isEditing, setIsEditing] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const [editedTask, setEditedTask] = useState({
@@ -75,7 +75,8 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole }) => {
   };
 
   const handleRemoveTask=()=>{
-
+        handleRemove(task._id);
+        onClose();
   };
 
   return (

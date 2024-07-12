@@ -171,20 +171,24 @@ const ProjectDetail = () => {
     setSelectedTask(null);
   };
 
-  if (!project) {
-    return <p className="text-gray-700">No project selected.</p>;
-  }
-
   const handleTaskRemove=async (taskId)=>{
-      setProject(prevState=({...prevState,tasks:prevState.tasks.filter(curr=>curr._id!=taskId)}));
-      await updateProject(project);
-      try{
-        
-        
+    try {
+      const res = await axiosApi.delete(`/task/${taskId}`);
+   
+      setProject((prevState) => {
+        const updatedProject = {
+          ...prevState,
+          tasks: prevState.tasks.filter((curr) => curr._id !== taskId),
+        };
+        updateProject(updatedProject);
+      });
       }catch(err){
         console.error("Error removing task");
       }
+  };
 
+  if (!project) {
+    return <p className="text-gray-700">No project selected.</p>;
   }
 
   return (
@@ -259,6 +263,7 @@ const ProjectDetail = () => {
       onClose={handleCloseDialog}
       onSave={handleSaveTaskDetails}
       userRole={userRole}
+      handleRemove={handleTaskRemove}
     />
     )}
 

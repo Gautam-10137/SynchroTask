@@ -119,6 +119,18 @@ const TaskServices = {
       throw err;
     }
 
+  },
+  removeTaskFromDB:async(taskId)=>{
+    try{
+        const task=await Task.findByIdAndDelete(taskId);
+        if(!task){
+          console.error("No task found");
+        }
+        return task;
+    }
+    catch(err){
+      console.error("Error removing task from DB");
+    }
   }
 };
 

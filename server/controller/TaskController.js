@@ -86,6 +86,19 @@ const TaskController = {
       console.error('Error updating task');
       res.status(500).send({message:'Error updating task'});
     }
+  },
+  removeTask:async(req,res)=>{
+    try{
+      const {taskId}=req.params;
+      const removedTask= await TaskServices.removeTaskFromDB(taskId);
+      if(!removedTask){
+        res.status(400).send({message:"Invalid Task"});
+        return;
+      }
+      res.status(200).send({message:"Task Removed Successfully."});
+    }catch(err){
+      res.status(500).send({message:"Error Removing task from DB"});
+    }
   }
 };
 
