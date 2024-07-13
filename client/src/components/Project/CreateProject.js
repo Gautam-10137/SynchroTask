@@ -26,7 +26,7 @@ const CreateProject = () => {
   const [showAddTaskDialog, setShowAddTaskDialog] = useState(false);
   const [newMemberEmail, setNewMemberEmail] = useState("");
   const [newMemberRole, setNewMemberRole] = useState("member");
-  const [showMemberError,setShowMemberError]=useState(false);
+  const [showError,setShowError]=useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [taskDetails, setTaskDetails] = useState({
     title: "",
@@ -36,7 +36,7 @@ const CreateProject = () => {
     assignedTo: [],
     dueDate: "",
   });
-
+  
   const handleTaskClick = (task) => {
     setSelectedTask(task);
   };
@@ -60,6 +60,7 @@ const CreateProject = () => {
 
   const handleAddMember = () => {
     setShowAddMemberDialog(true);
+  
   };
 
   const handleAddMemberSubmit = async (e) => {
@@ -72,16 +73,18 @@ const CreateProject = () => {
       setShowAddMemberDialog(false);
       setNewMemberEmail("");
       setNewMemberRole("member");
-      setShowMemberError(false);
+      
     } catch (err) {
-      setShowMemberError(true);
+      console.log("Error Member Adding");
       setNewMemberEmail("");
       setNewMemberRole("member");
+      setShowError(true);
     }
   };
 
   const handleAddTask = () => {
     setShowAddTaskDialog(true);
+
   };
 
   const handleAddTaskSubmit = async (e) => {
@@ -218,14 +221,15 @@ const CreateProject = () => {
         </form>
         {showAddMemberDialog && (
           <AddMemberDialog
-            setShowMemberError={setShowMemberError}
-            showMemberError={showMemberError}
+            
+            showError={showError}
             handleAddMemberSubmit={handleAddMemberSubmit}
             newMemberEmail={newMemberEmail}
             setNewMemberEmail={setNewMemberEmail}
             newMemberRole={newMemberRole}
             setNewMemberRole={setNewMemberRole}
             setShowAddMemberDialog={setShowAddMemberDialog}
+            setShowError={setShowError}
           />
         )}
         {showAddTaskDialog && (

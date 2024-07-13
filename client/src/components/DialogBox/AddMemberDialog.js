@@ -1,20 +1,24 @@
 import React, { useEffect } from 'react'
 
-const AddMemberDialog = ({setShowMemberError,showMemberError,handleAddMemberSubmit,newMemberEmail,setNewMemberEmail,newMemberRole,setNewMemberRole,setShowAddMemberDialog}) => {
-  
-  useEffect(()=>{
+const AddMemberDialog = ({showError,handleAddMemberSubmit,newMemberEmail,setNewMemberEmail,newMemberRole,setNewMemberRole,setShowAddMemberDialog,setShowError}) => {
 
-  },[showMemberError]);
   
   const handleCloseDialog=()=>{
     setShowAddMemberDialog(false); 
-    setShowMemberError(false); 
+    setShowError(false); 
+    setNewMemberEmail('');
   }
+
+  const handleSubmit=(e)=>{
+      e.preventDefault();
+      handleAddMemberSubmit(e);
+  }
+
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-black bg-opacity-50">
           <div className="bg-white p-8 rounded shadow-lg">
             <h3 className="text-2xl font-semibold mb-4">Add New Member</h3>
-            <form onSubmit={handleAddMemberSubmit}>
+            <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium mb-2">
                   Member Email
@@ -41,7 +45,7 @@ const AddMemberDialog = ({setShowMemberError,showMemberError,handleAddMemberSubm
                   <option value="admin">Admin</option>
                 </select>
               </div>
-              {showMemberError && (
+              {showError && (
                 <div className=' text-red-600'>
                   No Member with given email exists!
                 </div>

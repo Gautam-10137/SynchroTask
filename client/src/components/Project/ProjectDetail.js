@@ -21,7 +21,7 @@ const ProjectDetail = () => {
   const [newMemberEmail, setNewMemberEmail] = useState("");
   const [newMemberRole, setNewMemberRole] = useState("member");
   const [selectedTask, setSelectedTask] = useState(null);
-  const [showMemberError,setShowMemberError]=useState(false);
+  const [showError,setShowError]=useState(false);
   const [taskDetails, setTaskDetails] = useState({
     title: "",
     description: "",
@@ -73,7 +73,7 @@ const ProjectDetail = () => {
 
   const handleAddMemberSubmit = async (e) => {
     e.preventDefault();
-    setShowMemberError(false);
+    setShowError(false);
     try {
       const res = await axiosApi.get(`user/detail/${newMemberEmail}`);
       const newMember = res.data.user;
@@ -84,7 +84,8 @@ const ProjectDetail = () => {
       setNewMemberEmail("");
       setNewMemberRole("member");
     } catch (err) {
-      setShowMemberError(true);
+      setShowError(true);
+      setNewMemberEmail('');
       console.error("Error adding member");
     }
   };
@@ -247,13 +248,14 @@ const ProjectDetail = () => {
     </div>
     {showAddMemberDialog && (
       <AddMemberDialog
-        showMemberError={showMemberError}
+        showError={showError}
         handleAddMemberSubmit={handleAddMemberSubmit}
         newMemberEmail={newMemberEmail}
         setNewMemberEmail={setNewMemberEmail}
         newMemberRole={newMemberRole}
         setNewMemberRole={setNewMemberRole}
         setShowAddMemberDialog={setShowAddMemberDialog}
+        setShowError={setShowError}
       />
     )}
 
