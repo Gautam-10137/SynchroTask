@@ -20,12 +20,13 @@ const CreateProject = () => {
     members: [{userId:user,role:'admin'}],
     tasks: [],
   });
-
+ 
   const Navigate=useNavigate();
   const [showAddMemberDialog, setShowAddMemberDialog] = useState(false);
   const [showAddTaskDialog, setShowAddTaskDialog] = useState(false);
   const [newMemberEmail, setNewMemberEmail] = useState("");
   const [newMemberRole, setNewMemberRole] = useState("member");
+  const [showMemberError,setShowMemberError]=useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [taskDetails, setTaskDetails] = useState({
     title: "",
@@ -65,13 +66,17 @@ const CreateProject = () => {
     e.preventDefault();
     try {
       const res = await axiosApi.get(`user/detail/${newMemberEmail}`);
+      
       const newUser = res.data.user;
       projectDetails.members.push({ userId: newUser, role: newMemberRole });
       setShowAddMemberDialog(false);
       setNewMemberEmail("");
       setNewMemberRole("member");
+      setShowMemberError(false);
     } catch (err) {
-      console.error("Error adding member");
+      setShowMemberError(true);
+      setNewMemberEmail("");
+      setNewMemberRole("member");
     }
   };
 
@@ -100,10 +105,11 @@ const CreateProject = () => {
 
   const handleCloseDialog = () => {
     setSelectedTask(null);
+
   };
 
   return (
-    <div className="flex justify-center  items-center min-h-screen bg-gray-100">
+    <div className="flex justify-center   items-center min-h-screen bg-gray-100">
       <div className="w-full max-w-3xl p-8 bg-white rounded-lg shadow-lg">
         <h2 className="text-3xl font-bold text-blue-600 mb-6 text-center">
           Create Project
@@ -212,6 +218,8 @@ const CreateProject = () => {
         </form>
         {showAddMemberDialog && (
           <AddMemberDialog
+            setShowMemberError={setShowMemberError}
+            showMemberError={showMemberError}
             handleAddMemberSubmit={handleAddMemberSubmit}
             newMemberEmail={newMemberEmail}
             setNewMemberEmail={setNewMemberEmail}

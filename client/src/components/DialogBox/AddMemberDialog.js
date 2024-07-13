@@ -1,11 +1,15 @@
 import React, { useEffect } from 'react'
 
-const AddMemberDialog = ({showMemberError,handleAddMemberSubmit,newMemberEmail,setNewMemberEmail,newMemberRole,setNewMemberRole,setShowAddMemberDialog}) => {
+const AddMemberDialog = ({setShowMemberError,showMemberError,handleAddMemberSubmit,newMemberEmail,setNewMemberEmail,newMemberRole,setNewMemberRole,setShowAddMemberDialog}) => {
   
   useEffect(()=>{
 
   },[showMemberError]);
   
+  const handleCloseDialog=()=>{
+    setShowAddMemberDialog(false); 
+    setShowMemberError(false); 
+  }
   return (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-black bg-opacity-50">
           <div className="bg-white p-8 rounded shadow-lg">
@@ -45,7 +49,7 @@ const AddMemberDialog = ({showMemberError,handleAddMemberSubmit,newMemberEmail,s
               <div className="flex justify-end">
                 <button
                   type="button"
-                  onClick={() => setShowAddMemberDialog(false)}
+                  onClick={handleCloseDialog}
                   className="bg-red-500 text-white px-4 py-2 rounded mr-2 hover:bg-red-600"
                 >
                   Cancel

@@ -43,7 +43,7 @@ function App() {
                 
                 {isAuthenticated && <Route path="/dashboard" element={<div><Dashboard/></div>} />}
                 <Route path="/project/:projectId" element={<div><DashNavigator/><ProjectDetail /></div>}></Route>
-                <Route path="/createProject"  element={<div><Navigator page={"ProjectDetail"} /><CreateProject/></div>}></Route>
+                <Route path="/createProject"  element={<div><DashNavigator/><CreateProject/></div>}></Route>
               </Routes>
             </ProjectProvider>
           </div>
