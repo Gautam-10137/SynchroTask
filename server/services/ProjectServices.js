@@ -1,6 +1,9 @@
 const { fetchProjects } = require("../controller/ProjectController");
 const Project = require("../model/Project");
+const User = require("../model/User");
 const { $where } = require("../model/User");
+const { sendProjectMail } = require("./AuthServices");
+
 
 const ProjectServices = {
   createProject: async (detail) => {
@@ -8,6 +11,17 @@ const ProjectServices = {
       const { name, description, members } = detail;
       const newProject = new Project({ name, description, members });
       await newProject.save();
+      
+      for(const idx in members){
+        const msg = `
+        <p>You are added to the Project:</p>
+        <p><strong>Project Name:</strong> ${name}</p>
+        <p><strong>Description:</strong> ${description}</p>
+        <p><strong>Role:</strong> ${members[idx].role}</p>
+      `;
+        sendProjectMail(members[idx].userId.email,msg);
+       
+      }
       return newProject;
     } catch (err) {
       console.error("Error creating a new Project: " + err.message);
@@ -82,6 +96,7 @@ const ProjectServices = {
         },
         { new: true, useFindAndModify: false }
       );
+      
       return {
         success: true,
         message: "Member added successfully",
@@ -91,6 +106,23 @@ const ProjectServices = {
       console.error("Error Adding user to project :" + err.message);
       throw err;
     }
+  },
+  sendProjectMailToUser:async(req,res)=>{
+     try{
+          const {email}=req.params;
+          const {project,role}=req.body;
+          const msg = `
+          <p>You are added to the Project:</p>
+          <p><strong>Project Name:</strong> ${project.name}</p>
+          <p><strong>Description:</strong> ${project.description}</p>
+          <p><strong>Role:</strong> ${role}</p>
+        `;
+          sendProjectMail(email,msg);    
+          res.status(200).send({message:'mail sent successfully'});
+
+     }catch(err){
+      console.log(err.message)
+     }
   },
   removeMemberFromProject: async (projectId, userId) => {
     try {

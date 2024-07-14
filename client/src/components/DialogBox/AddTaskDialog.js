@@ -108,7 +108,7 @@ const AddTaskDialog = ({project,taskDetails,setTaskDetails,handleAddTaskSubmit,s
             >
               {project.members.map((member) => (
                 <option key={member.userId._id} value={member.userId._id}>
-                  {member.userId.name}
+                  {member.userId.name}({member.userId.email})
                 </option>
               ))}
             </select>

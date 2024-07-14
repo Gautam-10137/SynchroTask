@@ -78,6 +78,7 @@ const ProjectDetail = () => {
       const res = await axiosApi.get(`user/detail/${newMemberEmail}`);
       const newMember = res.data.user;
       
+      const res2=await axiosApi.post(`project/mail/${newMemberEmail}`,JSON.stringify({project,role:newMemberRole}));
       project.members.push({ userId: newMember, role: newMemberRole });
       await updateProject(project);
       setShowAddMemberDialog(false);

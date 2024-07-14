@@ -11,6 +11,8 @@ router.post('/:projectId/member',ProjectController.addMemberToProject);
 // router.delete('/:projectId/members/:userId',ProjectController.removeMemberFromProject);
 router.post('/:projectId/task',TaskController.createTask);
 router.put('/update/:projectId',ProjectController.updateProject);
+
+router.post('/mail/:email',ProjectServices.sendProjectMailToUser);
 // router.delete('/remove/:projectId',);
 
 module.exports=router;
