@@ -2,7 +2,7 @@ const { fetchProjects } = require("../controller/ProjectController");
 const Project = require("../model/Project");
 const User = require("../model/User");
 const { $where } = require("../model/User");
-const { sendProjectMail } = require("./AuthServices");
+const { sendMail } = require("./AuthServices");
 
 
 const ProjectServices = {
@@ -19,7 +19,7 @@ const ProjectServices = {
         <p><strong>Description:</strong> ${description}</p>
         <p><strong>Role:</strong> ${members[idx].role}</p>
       `;
-        sendProjectMail(members[idx].userId.email,msg);
+        sendMail(members[idx].userId.email,"New Project",msg);
        
       }
       return newProject;
@@ -117,7 +117,7 @@ const ProjectServices = {
           <p><strong>Description:</strong> ${project.description}</p>
           <p><strong>Role:</strong> ${role}</p>
         `;
-          sendProjectMail(email,msg);    
+          sendMail(email,"New Project",msg);    
           res.status(200).send({message:'mail sent successfully'});
 
      }catch(err){

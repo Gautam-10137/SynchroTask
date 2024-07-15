@@ -163,9 +163,9 @@ const AuthServices = {
       res.status(500).json({message:'Error Reseting password'});
     }
   },
- sendProjectMail:async(email,msg)=>{
+ sendMail:async(email,subject,msg)=>{
   try{
-    console.log(email,msg);
+    
     const transporter= nodemailer.createTransport({
       service: "Gmail",
       auth:{
@@ -177,7 +177,7 @@ const AuthServices = {
     const info= await transporter.sendMail({
       from:process.env.EMAILUSER,
       to: email,
-      subject:"New Project",
+      subject:subject,
       html:msg
     });
 

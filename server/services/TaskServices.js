@@ -1,14 +1,33 @@
 const Project = require("../model/Project");
 const Task = require("../model/Task");
 const Comment = require("../model/Comment");
+const User = require("../model/User");
+const { sendMail } = require("./AuthServices");
 const TaskServices = {
   createTask: async (detail, projectId) => {
     try {
-      const newTask = new Task({ ...detail, projectId: projectId });
+      const newTask = new Task({ ...detail.newTask, projectId: projectId });
       if (!newTask) {
         throw new Error("Incorrect Task Deatils ");
       }
       await newTask.save();
+   
+      for(const idx in newTask.assignedTo){
+        const user= await User.findById(newTask.assignedTo[idx]);
+    
+         const msg = `
+          <p>You have assigned a task in the Project:</p>
+          <p><strong>Project Name:</strong> ${detail.project}</p>
+          <p><strong>Task Details:</strong> </p>
+          <p><strong>title:</strong>${newTask.title}</p>
+          <p><strong>description:</strong>${newTask.description}</p>
+          <p><strong>status:</strong>${newTask.status}</p>
+          <p><strong>priority:</strong>${newTask.priority}</p>
+          <p><strong>dueDate:<strong>${newTask.dueDate}</p>
+        `;
+         await sendMail(user.email,"New Task",msg); 
+      }
+     
       await Project.findByIdAndUpdate(projectId, {
         $push: { tasks: newTask._id },
       });

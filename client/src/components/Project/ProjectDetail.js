@@ -34,6 +34,7 @@ const ProjectDetail = () => {
   const { updateProject } = useProjects();
   const [showChat,setShowChat]=useState(false);
   const chatRef= useRef(null);
+  const [isLoading,setIsLoading]=useState(false);
 
   useEffect(() => {
 
@@ -97,9 +98,14 @@ const ProjectDetail = () => {
 
   const handleAddTaskSubmit = async (e) => {
     e.preventDefault();
+    
     try {
+      setIsLoading(true);
       const newTask = { ...taskDetails };
-      const res = await axiosApi.post(`project/${project._id}/task`, newTask);
+      
+      const details={newTask,project:project.name};
+
+      const res = await axiosApi.post(`project/${project._id}/task`, details);
       const updatedProject = {
         ...project,
         tasks: [...project.tasks, res.data.task],
@@ -115,6 +121,7 @@ const ProjectDetail = () => {
         assignedTo: [],
         dueDate: "",
       });
+      setIsLoading(false);
     } catch (err) {
       console.error("Error adding task:", err);
     }
@@ -289,6 +296,7 @@ const ProjectDetail = () => {
 
     {showAddTaskDialog && (
       <AddTaskDialog
+        isLoading={isLoading}
         project={project}
         taskDetails={taskDetails}
         setTaskDetails={setTaskDetails}
