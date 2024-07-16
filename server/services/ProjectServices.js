@@ -1,5 +1,6 @@
 const { fetchProjects } = require("../controller/ProjectController");
 const Project = require("../model/Project");
+const Task = require("../model/Task");
 const User = require("../model/User");
 const { $where } = require("../model/User");
 const { sendMail } = require("./AuthServices");
@@ -78,6 +79,11 @@ const ProjectServices = {
   },
   removeProjectFromDB: async (projectId) => {
     try {
+      const p=await Project.findById(projectId);
+
+      p.tasks.forEach(async (taskId)=>{
+         const task=await Task.findByIdAndDelete(taskId);
+      });
       const project = await Project.findByIdAndDelete(projectId);
       if (!project) {
         throw new Error("Project not found");

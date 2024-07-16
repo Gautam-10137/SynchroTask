@@ -82,7 +82,7 @@ export const ProjectProvider = ({ children }) => {
 
   const removeProject = async (projectId) => {
     try {
-      await axiosApi.delete(`project/remove/${projectId}`);
+      await axiosApi.delete(`project/${projectId}`);
       setProjects((prevProjects) => prevProjects.filter((project) => project._id !== projectId));
       saveProjectsToLocalStorage(projects);
     } catch (err) {
