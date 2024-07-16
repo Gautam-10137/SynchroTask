@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Comment = require("./Comment");
 
 const taskSchema = new mongoose.Schema({
   title: { 
@@ -37,6 +38,16 @@ const taskSchema = new mongoose.Schema({
 },{
     timestamps:true
 });
+
+// taskSchema.pre('remove', async function(next){
+//   try{
+//       await Comment.deleteMany({taskId: this._id});
+//       next();
+//   }catch(err){
+//     next(err);
+//   }
+
+// })
 
 const Task = mongoose.model("Task", taskSchema);
 module.exports = Task;

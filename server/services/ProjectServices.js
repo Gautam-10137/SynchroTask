@@ -80,7 +80,7 @@ const ProjectServices = {
   removeProjectFromDB: async (projectId) => {
     try {
       const p=await Project.findById(projectId);
-
+      
       p.tasks.forEach(async (taskId)=>{
          const task=await Task.findByIdAndDelete(taskId);
       });

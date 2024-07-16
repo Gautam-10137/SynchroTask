@@ -3,6 +3,7 @@ const Task = require("../model/Task");
 const Comment = require("../model/Comment");
 const User = require("../model/User");
 const { sendMail } = require("./AuthServices");
+const { default: mongoose } = require("mongoose");
 const TaskServices = {
   createTask: async (detail, projectId) => {
     try {
@@ -141,10 +142,29 @@ const TaskServices = {
   },
   removeTaskFromDB:async(taskId)=>{
     try{
-        const task=await Task.findByIdAndDelete(taskId);
+        const task=await Task.findById(taskId);
         if(!task){
           console.error("No task found");
         }
+
+        const session= await mongoose.startSession();
+        session.startTransaction();
+        try{
+          await Comment.deleteMany({ taskId: task._id }).session(session);
+          await Task.findByIdAndDelete(task._id).session(session);
+    
+          await session.commitTransaction();
+            session.endSession();
+            console.log("Task and associated comments deleted successfully");
+
+        }catch(err){
+
+          await session.abortTransaction();
+          session.endSession();
+          console.error('Error deleting tasks and comments:'+err.message);
+        }
+
+
         return task;
     }
     catch(err){
