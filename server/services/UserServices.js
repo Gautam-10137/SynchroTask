@@ -4,9 +4,9 @@ const UserServices={
     fetchUser: async(req,res)=>{
         try{
             const {email}=req.params;
-            console.log(email);
+            
             const user=await User.findOne({email:email});
-            console.log(user);
+           
             if(!user){
                 return res.status(404).send({message:'User not found'});
             }
@@ -14,7 +14,6 @@ const UserServices={
         }catch(err){
             res.status(500).send('Error Fetching User')
         }
-
     }
 }
 

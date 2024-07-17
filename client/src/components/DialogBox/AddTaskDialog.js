@@ -1,7 +1,6 @@
 import React from 'react';
 import LoadingSpinner from '../Loading/LoadingSpinner';
 
-
 const AddTaskDialog = ({
   isLoading,
   project,
@@ -107,13 +106,16 @@ const AddTaskDialog = ({
                   multiple
                   value={taskDetails.assignedTo}
                   onChange={(e) =>
-                    setTaskDetails({
+                    {setTaskDetails({
                       ...taskDetails,
                       assignedTo: Array.from(
                         e.target.selectedOptions,
                         (option) => option.value
                       ),
-                    })
+                    });
+                    console.log(taskDetails);
+                  
+                    }
                   }
                   className="w-full border border-gray-300 rounded-md p-2 focus:border-blue-500 focus:ring-blue-500"
                 >

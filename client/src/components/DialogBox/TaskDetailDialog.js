@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axiosApi from '../../axios/api';
 import { useSelector } from 'react-redux';
 import { useProjects } from '../../context/ProjectContext';
 
-const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove}) => {
+const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,members}) => {
   const [isEditing, setIsEditing] = useState(false);
   const { user } = useSelector((state) => state.auth);
+  const [taskMembers,setTaskMembers]=useState({});
   const [editedTask, setEditedTask] = useState({
     title: task.title,
     description: task.description,
@@ -16,8 +17,25 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove}) => {
     comments: task.comments,
     _id: task._id,
   });
-  console.log("edited task");
-  console.log(editedTask);
+
+  useEffect(()=>{
+    console.log(members);
+    console.log(task.assignedTo);
+    if (Array.isArray(task.assignedTo) && Array.isArray(members)) {
+    const userDetailsMap=members.reduce((acc,member)=>{
+      acc[member.userId._id]=member.userId;
+      return acc;
+    },{})
+    const assignedDetails=task.assignedTo.reduce((acc,userId)=>{
+       if(userDetailsMap[userId]){
+        acc[userId]=userDetailsMap[userId];
+       }
+       return acc;
+    },{});
+    console.log(assignedDetails);
+  }
+  },[]);
+
 
   const { fetchProjects,updateTaskInProject } = useProjects();
   const [isAddComment, setIsAddComment] = useState(false);
@@ -39,7 +57,7 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove}) => {
   const handleAddCommentClick = () => {
     setIsAddComment(true);
   };
-
+  console.log(task);
   const handleAddComment = async () => {
     try {
       const comment = { author: user.id, content: newComment };

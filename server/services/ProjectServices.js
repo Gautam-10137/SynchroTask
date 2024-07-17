@@ -12,7 +12,7 @@ const ChatMessage = require("../model/ChatMessage");
 const ProjectServices = {
   createProject: async (detail) => {
     try {
-      const { name, description, members } = detail;
+      const { name, description, members,tasks } = detail;
       const newProject = new Project({ name, description, members });
       await newProject.save();
       
@@ -25,8 +25,20 @@ const ProjectServices = {
       `;
         sendMail(members[idx].userId.email,"New Project",msg);
        
-      }
-      return newProject;
+      } 
+      
+     if(tasks.length>0){ tasks.forEach(async (task)=>{
+       const newTask= new Task({...task,projectId:newProject._id});
+       await newTask.save();
+     
+       await Project.findByIdAndUpdate(newProject._id,{
+        $push:{tasks:newTask._id}},{new:true});
+       
+      })
+    }
+    const updated=await Project.findById(newProject._id);
+      
+      return updated ;
     } catch (err) {
       console.error("Error creating a new Project: " + err.message);
       throw err;

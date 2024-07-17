@@ -62,9 +62,11 @@ const ProjectDetail = () => {
 
   const handleTaskClick = (task) => {
     setSelectedTask(task);
+
   };
 
   const handleCloseDialog = () => {
+    
     setSelectedTask(null);
   };
 
@@ -113,6 +115,7 @@ const ProjectDetail = () => {
         ...project,
         tasks: [...project.tasks, res.data.task],
       };
+      
       await updateProject(updatedProject);
       setProject(updatedProject);
       setShowAddTaskDialog(false);
@@ -310,6 +313,7 @@ const ProjectDetail = () => {
           onSave={handleSaveTaskDetails}
           userRole={userRole}
           handleRemove={handleTaskRemove}
+          members={project.members}
         />
       )}
 

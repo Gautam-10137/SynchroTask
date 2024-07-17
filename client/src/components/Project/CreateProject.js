@@ -50,6 +50,8 @@ const CreateProject = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log("project Details");
+      console.log(projectDetails);
       addProject(projectDetails); 
       Navigate('/dashboard');
       
@@ -104,6 +106,7 @@ const CreateProject = () => {
     } catch (err) {
       console.error("Error adding task:", err);
     }
+    
   };
 
   const handleCloseDialog = () => {
@@ -242,7 +245,7 @@ const CreateProject = () => {
           />
         )}
         {selectedTask && (
-          <TaskDetailDialog task={selectedTask} onClose={handleCloseDialog} />
+          <TaskDetailDialog task={selectedTask} userRole="admin" onClose={handleCloseDialog} members={projectDetails.members}/>
         )}
       </div>
     </div>
