@@ -1,9 +1,12 @@
+const { default: mongoose } = require("mongoose");
 const { fetchProjects } = require("../controller/ProjectController");
 const Project = require("../model/Project");
 const Task = require("../model/Task");
 const User = require("../model/User");
 const { $where } = require("../model/User");
 const { sendMail } = require("./AuthServices");
+const { removeTaskFromDB } = require("./TaskServices");
+const ChatMessage = require("../model/ChatMessage");
 
 
 const ProjectServices = {
@@ -79,15 +82,26 @@ const ProjectServices = {
   },
   removeProjectFromDB: async (projectId) => {
     try {
-      const p=await Project.findById(projectId);
-      
-      p.tasks.forEach(async (taskId)=>{
-         const task=await Task.findByIdAndDelete(taskId);
-      });
-      const project = await Project.findByIdAndDelete(projectId);
+      const project =await Project.findById(projectId);
       if (!project) {
         throw new Error("Project not found");
       }
+      const session= await mongoose.startSession();
+      session.startTransaction();
+      try{
+         await Promise.all(project.tasks.map(async (taskId) => {
+           await removeTaskFromDB(taskId);
+         }));
+         await ChatMessage.deleteMany({projectID:project._id}).session(session);
+         await Project.findByIdAndDelete(projectId).session(session);
+         await session.commitTransaction();
+         console.log("Project and associated tasks deleted successfully");
+      }catch(err){
+        await session.abortTransaction();
+        console.error("Error Deleting project and associated tasks");
+      }finally{
+        session.endSession();
+      } 
       return project;
     } catch (err) {
       console.error("Error removing project");

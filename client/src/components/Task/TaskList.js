@@ -14,9 +14,9 @@ const TaskList = () => {
   useEffect(() => {
     const fetchAssignedTasks = async () => {
       try {
-        
         const res = await axiosApi.get(`/task/assigned-to/${user.id}`);
-        setTasks(res.data.tasks);
+        setTasks(res.data,tasks);
+        
       } catch (err) {
         setError("Error fetching tasks");
       } finally {
@@ -24,7 +24,12 @@ const TaskList = () => {
       }
     };
     fetchAssignedTasks();
-  }, [user,tasks]);
+
+  }, []);
+  
+ useEffect(()=>{
+   console.log(tasks);
+ },[tasks]);
 
   const handleTaskClick = (task) => {
     setSelectedTask(task);
@@ -55,7 +60,7 @@ const TaskList = () => {
   if (error) return <div className="text-red-500 text-center">{error}</div>;
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="p-6 bg-gray-200 min-h-screen">
       <h2 className="text-3xl text-green-500 font-bold mb-6 text-center">Assigned Tasks</h2>
       {tasks.length > 0 ? (
         <ul className="space-y-4">

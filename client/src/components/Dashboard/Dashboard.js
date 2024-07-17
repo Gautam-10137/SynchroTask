@@ -10,7 +10,6 @@ const Dashboard = () => {
   const Navigate=useNavigate();
   useEffect(()=>{
      checkIsAuth();
-     
   },[]);
   const checkIsAuth=()=>{
     if(!isAuthenticated || !user){
@@ -21,7 +20,6 @@ const Dashboard = () => {
       }
       Navigate('/login');
      }
-     console.log(user);
   }
   return (
     <div className="bg-gray-100 min-h-screen flex justify-center items-center">

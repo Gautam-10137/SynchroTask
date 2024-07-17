@@ -37,7 +37,6 @@ export const ProjectProvider = ({ children }) => {
   };
 
   
-
   const fetchProjects = useCallback(async () => {
     setLoading(true);
     try {
@@ -46,7 +45,7 @@ export const ProjectProvider = ({ children }) => {
       setProjects(res.data.projects);
       saveProjectsToLocalStorage(res.data.projects);
     } catch (err) {
-      console.error('Error fetching projects.');
+      console.log('No projects Found.');
       const localProjects = loadProjectsFromLocalStorage();
       setProjects(localProjects);
     } finally {
@@ -83,8 +82,11 @@ export const ProjectProvider = ({ children }) => {
   const removeProject = async (projectId) => {
     try {
       await axiosApi.delete(`project/${projectId}`);
-      setProjects((prevProjects) => prevProjects.filter((project) => project._id !== projectId));
-      saveProjectsToLocalStorage(projects);
+      setProjects((prevProjects) => {
+        const updatedProjects = prevProjects.filter((project) => project._id !== projectId);
+        saveProjectsToLocalStorage(updatedProjects);
+        return updatedProjects;
+      });
     } catch (err) {
       console.error('Error removing project');
     }

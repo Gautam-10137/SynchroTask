@@ -32,7 +32,8 @@ const TaskServices = {
       await Project.findByIdAndUpdate(projectId, {
         $push: { tasks: newTask._id },
       });
-      return newTask;
+      const task=await Task.findById(newTask._id).populate('assignedTo');
+      return task;
     } catch (err) {
       console.error("Error Creating Task:" + err.message());
       throw err;
@@ -133,7 +134,6 @@ const TaskServices = {
        }
        return updatedTask;
          
-       
     }catch(err){
       console.error("Error task updating");
       throw err;
@@ -154,17 +154,13 @@ const TaskServices = {
           await Task.findByIdAndDelete(task._id).session(session);
     
           await session.commitTransaction();
-            session.endSession();
-            console.log("Task and associated comments deleted successfully");
-
+          session.endSession();
+          console.log("Task and associated comments deleted successfully");
         }catch(err){
-
           await session.abortTransaction();
           session.endSession();
           console.error('Error deleting tasks and comments:'+err.message);
         }
-
-
         return task;
     }
     catch(err){

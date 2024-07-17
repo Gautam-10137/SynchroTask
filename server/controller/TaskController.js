@@ -18,7 +18,9 @@ const TaskController = {
        if(tasks==null){
         res.status(404).send({message:'No tasks assigned'});
        }
+       
        res.status(200).send({tasks});
+
 
     }catch(err){
       res.status(500).send({message:'Error Fetching tasks'});

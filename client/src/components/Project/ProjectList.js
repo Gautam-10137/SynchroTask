@@ -17,11 +17,13 @@ const ProjectList = () => {
       <div className="container mx-auto">
       <h1 className="text-3xl font-bold mb-4 text-center text-purple-700">My Projects</h1>
 
-        <div className="flex flex-wrap justify-around ">
+        {projects.length>0?<div className="flex flex-wrap justify-around ">
           {projects.length>0 && projects.map((project) => (
             <ProjectCard key={project._id} project={project} />
           ))}
-        </div>
+        </div>:<div className='text-center text-gray-700 mt-6 text-l'>
+          No Projects Found.
+        </div>}
       </div>
     </section>
   );
