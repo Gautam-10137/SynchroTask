@@ -8,6 +8,7 @@ import { loadUser } from "../../redux/authSlice";
 const Dashboard = () => {
   const {isAuthenticated,user}=useSelector((state)=>state.auth);
   const Navigate=useNavigate();
+
   useEffect(()=>{
      checkIsAuth();
   },[]);
@@ -35,7 +36,7 @@ const Dashboard = () => {
        </div>
         <div className="py-8 px-4 sm:px-6 lg:px-8">
           
-          <ProjectList />
+          <ProjectList  />
         </div>
         <div className="py-8 px-4 sm:px-6 lg:px-8">
           <TaskList />

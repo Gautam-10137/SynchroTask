@@ -64,8 +64,7 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,member
       const res = await axiosApi.post(`task/${task._id}/comment`, comment, {
         headers: { 'Content-Type': 'application/json' },
       });
-      console.log("response");
-      console.log(res.data);
+    
 
       const updatedTask = {
         ...editedTask,
@@ -84,8 +83,7 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,member
       // Clear newComment field and reset state
       setIsAddComment(false);
       setNewComment('');
-      console.log("edited");
-      console.log(editedTask);
+    
       
     } catch (err) {
       console.error('Error adding comment:', err.message);

@@ -9,6 +9,7 @@ export const useProjects = () => useContext(ProjectContext);
 
 export const ProjectProvider = ({ children }) => {
   const [projects, setProjects] = useState([]);
+  const [fetchTask,setFetchTask]=useState(false);
   const { user } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
 
@@ -58,9 +59,11 @@ export const ProjectProvider = ({ children }) => {
   }, [fetchProjects]);
 
   const addProject = async (project) => {
+    setFetchTask(false);
     try {
-      const res = await axiosApi.post('project/create', project);
       
+      const res = await axiosApi.post('project/create', project);
+      setFetchTask(true);
       fetchProjects();
     } catch (err) {
       console.error('Error adding project: ' + err.message);
@@ -94,7 +97,7 @@ export const ProjectProvider = ({ children }) => {
   };
 
   return (
-    <ProjectContext.Provider value={{ projects, fetchProjects, addProject, updateProject, removeProject, updateTaskInProject }}>
+    <ProjectContext.Provider value={{ projects, fetchProjects, addProject, updateProject, removeProject, updateTaskInProject,fetchTask,setFetchTask }}>
       {children}
     </ProjectContext.Provider>
   );

@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const CreateProject = () => {
-  const { addProject } = useProjects();
+  const { addProject,setFetchTask } = useProjects();
   var { user } = useSelector((state) => state.auth);
   const _id=user.id;
   const {id,...rest}=user;
@@ -54,6 +54,7 @@ const CreateProject = () => {
       console.log(projectDetails);
       addProject(projectDetails); 
       Navigate('/dashboard');
+      
       
     } catch (err) {
       console.error('Error creating project:', err.message);

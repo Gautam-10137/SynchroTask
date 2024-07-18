@@ -3,19 +3,20 @@ import axiosApi from "../../axios/api";
 import { useSelector } from "react-redux";
 import TaskDetailDialog from "../DialogBox/TaskDetailDialog";
 import { loadUser } from "../../redux/authSlice";
+import { useProjects } from "../../context/ProjectContext";
+
 const TaskList = () => {
+  const {fetchTask}=useProjects();
   const { user } = useSelector((state) => state.auth);
-  
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedTask, setSelectedTask] = useState(null);
 
-  useEffect(() => {
-    const fetchAssignedTasks = async () => {
+  const fetchAssignedTasks = async () => {
       try {
         const res = await axiosApi.get(`/task/assigned-to/${user.id}`);
-        setTasks(res.data,tasks);
+        setTasks(res.data.tasks);
         
       } catch (err) {
         setError("Error fetching tasks");
@@ -23,12 +24,20 @@ const TaskList = () => {
         setLoading(false);
       }
     };
-    fetchAssignedTasks();
-
-  }, []);
+    useEffect(() => {
+        fetchAssignedTasks();
+      
+    }, []);
+     
+  useEffect(() => {
+    if(fetchTask){
+      fetchAssignedTasks();
+    }
+    
+  }, [fetchTask]);
   
  useEffect(()=>{
-   console.log(tasks);
+  
  },[tasks]);
 
   const handleTaskClick = (task) => {
@@ -113,7 +122,7 @@ const TaskList = () => {
         </ul>
       ) : (
         <div className="text-center text-gray-700 mt-6">
-          No tasks assigned to you.
+          No tasks assigned to you.  
         </div>
       )}
       {selectedTask && (

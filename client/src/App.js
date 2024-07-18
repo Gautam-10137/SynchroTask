@@ -9,7 +9,7 @@ import { ProjectProvider } from './context/ProjectContext';
 import ProjectDetail from './components/Project/ProjectDetail';
 import CreateProject from './components/Project/CreateProject';
 import DashNavigator from './components/Dashboard/DashNavigator';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { loadUser } from './redux/authSlice';
 
 function App() {
@@ -38,12 +38,12 @@ function App() {
           </div>    
           <div>
             <ProjectProvider> 
-              {/* <Navigator/> */}
+              
               <Routes>
                 
-                {isAuthenticated && <Route path="/dashboard" element={<div><Dashboard/></div>} />}
+                {isAuthenticated && <Route path="/dashboard" element={<div><Dashboard /></div>} />}
                 <Route path="/project/:projectId" element={<div><DashNavigator/><ProjectDetail /></div>}></Route>
-                <Route path="/createProject"  element={<div><DashNavigator/><CreateProject/></div>}></Route>
+                <Route path="/createProject"  element={<div><DashNavigator/><CreateProject /></div>}></Route>
               </Routes>
             </ProjectProvider>
           </div>
