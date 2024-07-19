@@ -6,7 +6,7 @@ import { useProjects } from '../../context/ProjectContext';
 const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,members}) => {
   const [isEditing, setIsEditing] = useState(false);
   const { user } = useSelector((state) => state.auth);
-  const [taskMembers,setTaskMembers]=useState({});
+  const [taskMembers,setTaskMembers]=useState([]);
   const [editedTask, setEditedTask] = useState({
     title: task.title,
     description: task.description,
@@ -18,24 +18,19 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,member
     _id: task._id,
   });
 
-  useEffect(()=>{
-    console.log(members);
-    console.log(task.assignedTo);
+  useEffect(() => {
     if (Array.isArray(task.assignedTo) && Array.isArray(members)) {
-    const userDetailsMap=members.reduce((acc,member)=>{
-      acc[member.userId._id]=member.userId;
-      return acc;
-    },{})
-    const assignedDetails=task.assignedTo.reduce((acc,userId)=>{
-       if(userDetailsMap[userId]){
-        acc[userId]=userDetailsMap[userId];
-       }
-       return acc;
-    },{});
-    console.log(assignedDetails);
-  }
-  },[]);
-
+      const userDetailsMap = members.reduce((acc, member) => {
+        acc[member.userId._id] = member.userId;
+        return acc;
+      }, {});
+      const assignedDetails = task.assignedTo.map((userId) => userDetailsMap[userId]).filter(Boolean);
+      setTaskMembers(assignedDetails);
+    }
+    else{
+      setTaskMembers(task.assignedTo);
+    }
+  }, [task.assignedTo, members]);
 
   const { fetchProjects,updateTaskInProject } = useProjects();
   const [isAddComment, setIsAddComment] = useState(false);
@@ -71,16 +66,12 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,member
         comments: [...editedTask.comments, res.data.newComment],
       };
   
-      // Update local state with the updatedTask
       setEditedTask(updatedTask);
   
-      // Update task in the project context
       updateTaskInProject(updatedTask);
   
-      // Save the editedTask (if needed)
       onSave(updatedTask);
   
-      // Clear newComment field and reset state
       setIsAddComment(false);
       setNewComment('');
     
@@ -188,7 +179,7 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,member
               <strong>Assigned To:</strong>
             </p>
             <ul className="list-disc list-inside mb-2">
-              {task.assignedTo.map((user, index) => (
+              {taskMembers.map((user, index) => (
                 <li key={index} className="text-gray-600">
                   {user.name} ({user.email})
                 </li>

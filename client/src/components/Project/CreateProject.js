@@ -93,6 +93,8 @@ const CreateProject = () => {
   const handleAddTaskSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log("new task");
+      console.log(taskDetails);
       const newTask = { ...taskDetails };
       projectDetails.tasks.push(newTask);
       setShowAddTaskDialog(false);

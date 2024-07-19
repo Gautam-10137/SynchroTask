@@ -313,7 +313,7 @@ const ProjectDetail = () => {
           onSave={handleSaveTaskDetails}
           userRole={userRole}
           handleRemove={handleTaskRemove}
-          members={project.members}
+          
         />
       )}
 
