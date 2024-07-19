@@ -7,6 +7,7 @@ const { $where } = require("../model/User");
 const { sendMail } = require("./AuthServices");
 const { removeTaskFromDB } = require("./TaskServices");
 const ChatMessage = require("../model/ChatMessage");
+const TaskServices = require("./TaskServices");
 
 
 const ProjectServices = {
@@ -30,9 +31,11 @@ const ProjectServices = {
      if(tasks.length>0){ tasks.forEach(async (task)=>{
        const newTask= new Task({...task,projectId:newProject._id});
        await newTask.save();
-     
+      
        await Project.findByIdAndUpdate(newProject._id,{
         $push:{tasks:newTask._id}},{new:true});
+      
+       await TaskServices.sendTaskMail(newTask,name);
        
       })
     }

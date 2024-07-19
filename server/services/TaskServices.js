@@ -13,21 +13,7 @@ const TaskServices = {
       }
       await newTask.save();
    
-      for(const idx in newTask.assignedTo){
-        const user= await User.findById(newTask.assignedTo[idx]);
-    
-         const msg = `
-          <p>You have assigned a task in the Project:</p>
-          <p><strong>Project Name:</strong> ${detail.project}</p>
-          <p><strong>Task Details:</strong> </p>
-          <p><strong>title:</strong>${newTask.title}</p>
-          <p><strong>description:</strong>${newTask.description}</p>
-          <p><strong>status:</strong>${newTask.status}</p>
-          <p><strong>priority:</strong>${newTask.priority}</p>
-          <p><strong>dueDate:<strong>${newTask.dueDate}</p>
-        `;
-         await sendMail(user.email,"New Task",msg); 
-      }
+     await TaskServices.sendTaskMail(newTask,detail.project);
      
       await Project.findByIdAndUpdate(projectId, {
         $push: { tasks: newTask._id },
@@ -37,6 +23,23 @@ const TaskServices = {
     } catch (err) {
       console.error("Error Creating Task:" + err.message());
       throw err;
+    }
+  },
+  sendTaskMail: async(newTask,name)=>{
+    for(const idx in newTask.assignedTo){
+      const user= await User.findById(newTask.assignedTo[idx]);
+  
+       const msg = `
+        <p>You have assigned a task in the Project:</p>
+        <p><strong>Project Name:</strong> ${name}</p>
+        <p><strong>Task Details:-</strong> </p>
+        <p><strong>title:</strong>${newTask.title}</p>
+        <p><strong>description:</strong>${newTask.description}</p>
+        <p><strong>status:</strong>${newTask.status}</p>
+        <p><strong>priority:</strong>${newTask.priority}</p>
+        <p><strong>dueDate:<strong>${newTask.dueDate}</p>
+      `;
+       await sendMail(user.email,"New Task",msg); 
     }
   },
   fetchTaskFromDB: async (userId) => {
