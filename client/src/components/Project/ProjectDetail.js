@@ -8,6 +8,7 @@ import AddTaskDialog from "../DialogBox/AddTaskDialog";
 import AddMemberDialog from "../DialogBox/AddMemberDialog";
 import Chat from "../Chat/Chat";
 import EditProjectDialog from "../DialogBox/EditProjectDialog";
+import MetricsDialog from "../DialogBox/MetricsDialog";
 
 const ProjectDetail = () => {
   const { projectId } = useParams();
@@ -18,6 +19,7 @@ const ProjectDetail = () => {
   const [showAddMemberDialog, setShowAddMemberDialog] = useState(false);
   const [showAddTaskDialog, setShowAddTaskDialog] = useState(false);
   const [showEditProjectDialog, setShowEditProjectDialog] = useState(false);
+  const [showMetricsDialog,setShowMetricsDialog]=useState(false);
   const [newMemberEmail, setNewMemberEmail] = useState("");
   const [newMemberRole, setNewMemberRole] = useState("member");
   const [selectedTask, setSelectedTask] = useState(null);
@@ -207,6 +209,10 @@ const ProjectDetail = () => {
     
   }
 
+  const handleMetricsClick=()=>{
+      setShowMetricsDialog(true);
+  }
+
   if (!project) {
     return <p className="text-gray-700">No project selected.</p>;
   }
@@ -223,6 +229,16 @@ const ProjectDetail = () => {
             alt="edit"
             className="h-8 w-8"
           ></img>
+        </button>
+        <button
+          className="  h-full border-2 p-2 rounded-full hover:bg-gray-200"
+          onClick={handleMetricsClick}
+        >
+          <img
+            src={require("../../static/PeformanceMetric.png")}
+            alt="Chat"
+            className="h-8 w-8"
+          />
         </button>
         <button
           className="  h-full border-2 p-2 rounded-full hover:bg-gray-200"
@@ -349,6 +365,11 @@ const ProjectDetail = () => {
           project={project}
           onClose={() => setShowEditProjectDialog(false)}
           onSave={handleEditProjectSave}
+        />
+      )}
+        {showMetricsDialog && (
+        <MetricsDialog  project={project}
+        setShowMetricsDialog={setShowMetricsDialog}
         />
       )}
 
