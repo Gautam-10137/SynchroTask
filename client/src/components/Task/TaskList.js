@@ -117,6 +117,10 @@ const TaskList = () => {
                 <strong>Due Date:</strong>{" "}
                 {new Date(task.dueDate).toLocaleDateString()}
               </p>
+              <p className="text-gray-700 mb-1">
+                <strong>Assigned Date:</strong>{" "}
+                {new Date(task.assignedDate).toLocaleDateString()}
+              </p>
             </li>
           ))}
         </ul>

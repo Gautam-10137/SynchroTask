@@ -20,7 +20,7 @@ const DashNavigator = () => {
   return (
     <div className="flex justify-between items-center mb-4 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg p-4 shadow-lg transform transition duration-300 hover:shadow-xl">
       <Link to="/" className="text-3xl font-bold text-white hover:text-yellow-300 transition duration-300">
-        SynchroTask
+        RemoteCollab
       </Link>
       <Link to="/dashboard" className="text-3xl font-bold text-white hover:text-yellow-300 transition duration-300">
         My Dashboard

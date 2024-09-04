@@ -7,15 +7,23 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,member
   const [isEditing, setIsEditing] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const [taskMembers,setTaskMembers]=useState([]);
+
+  const formatDate = (date) => {
+    if (!date) return ''; 
+    return new Date(date).toISOString().split('T')[0];
+  };  
+
   const [editedTask, setEditedTask] = useState({
     title: task.title,
     description: task.description,
     priority: task.priority,
     status: task.status,
     assignedTo: task.assignedTo,
-    dueDate: task.dueDate,
+    assignedDate: formatDate(task.assignedDate),  // Format the date
+    dueDate: formatDate(task.dueDate),   
     comments: task.comments,
-    _id: task._id,
+    _id: task._id
+ 
   });
 
   useEffect(() => {
@@ -71,11 +79,9 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,member
       updateTaskInProject(updatedTask);
   
       onSave(updatedTask);
-  
       setIsAddComment(false);
       setNewComment('');
-    
-      
+ 
     } catch (err) {
       console.error('Error adding comment:', err.message);
     }
@@ -138,6 +144,16 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,member
               </select>
             </label>
             <label className="block mb-2">
+              Assigned Date:
+              <input
+                type="date"
+                name="assignedDate"
+                value={editedTask.assignedDate}
+                onChange={handleInputChange}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </label>
+            <label className="block mb-2">
               Due Date:
               <input
                 type="date"
@@ -185,6 +201,9 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,member
                 </li>
               ))}
             </ul>
+            <p className="text-gray-700 mb-2">
+              <strong>Assigned Date:</strong> {task.assignedDate}
+            </p>
             <p className="text-gray-700 mb-2">
               <strong>Due Date:</strong> {task.dueDate}
             </p>

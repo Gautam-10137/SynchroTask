@@ -28,6 +28,10 @@ const taskSchema = new mongoose.Schema({
     ref:'Project',
     required:true
   },
+  assignedDate:{
+    type: Date,
+    default:Date.now()
+  },
   dueDate:{
     type:Date,
   },

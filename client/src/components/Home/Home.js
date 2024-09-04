@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <div className="font-sans text-gray-900">
       <header className="text-center py-12 bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
-        <h1 className="text-5xl font-bold mb-4 transition duration-500 transform hover:scale-105">Welcome to Project Management Tool</h1>
+        <h1 className="text-5xl font-bold mb-4 transition duration-500 transform hover:scale-105">Welcome to Remote Collaboration Tool</h1>
         <p className="text-xl mb-6 transition duration-500 transform hover:scale-105">Organize your projects, collaborate with your team, and stay on track!</p>
       </header>
       <main className="p-8">
