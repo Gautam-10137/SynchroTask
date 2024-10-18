@@ -44,7 +44,15 @@ const TaskServices = {
   },
   fetchTaskFromDB: async (userId) => {
     try {
-      const tasks = await Task.find({assignedTo:userId}).populate('assignedTo', 'name email').populate('projectId');
+      const tasks = await Task.find({assignedTo:userId}).populate('assignedTo', 'name email').populate('projectId').populate({
+        path: "comments",
+        model: "Comment",
+        populate: {
+            path: "author",
+            model: "User",
+          }
+        
+      });
       if (!tasks) {
         return null;
       }
@@ -82,7 +90,7 @@ const TaskServices = {
         { new: true }
       );
       const comment= await Comment.findOne({_id:newComment._id}).populate('author');
-
+ 
     
       return comment;
     } catch (err) {

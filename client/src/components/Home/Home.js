@@ -45,7 +45,7 @@ const Home = () => {
           <section className="mb-12 text-center">
             <h2 className="text-4xl font-semibold mb-4">Get Started</h2>
             <p className="text-lg mb-6">Sign up now and take control of your projects.</p>
-            <Link to="/signup" className="inline-block bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition duration-300 transform hover:scale-105">
+            <Link to="/register" className="inline-block bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition duration-300 transform hover:scale-105">
               Sign Up
             </Link>
             <Link to="/login" className="ml-4 inline-block bg-gray-600 text-white px-6 py-2 rounded hover:bg-gray-700 transition duration-300 transform hover:scale-105">

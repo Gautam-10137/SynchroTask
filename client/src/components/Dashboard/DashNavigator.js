@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../redux/authSlice";
 
 const DashNavigator = () => {
-  const { user } = useSelector((state) => state.auth);
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -16,6 +16,7 @@ const DashNavigator = () => {
     dispatch(logout());
     navigate("/");
   };
+ 
 
   return (
     <div className="flex justify-between items-center mb-4 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg p-4 shadow-lg transform transition duration-300 hover:shadow-xl">

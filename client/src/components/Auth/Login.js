@@ -1,69 +1,71 @@
-import React,{useEffect, useState} from 'react'
-import {useDispatch } from 'react-redux'
-import { Link ,useNavigate} from 'react-router-dom';
-import { login } from '../../redux/authSlice';
-import axiosApi from '../../axios/api';
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../../redux/authSlice";
+import axiosApi from "../../axios/api";
 const Login = ({}) => {
-    const dispatch=useDispatch();
-    const Navigate=useNavigate();
-    const [formData,setFormData]=useState({
-        email:'',
-        password:''
+  const dispatch = useDispatch();
+  const Navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [showDialog, setShowDialog] = useState(false);
+  const [showEmail, setShowEmail] = useState(false);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
     });
-    const [showDialog,setShowDialog]=useState(false);
-    const [showEmail,setShowEmail]=useState(false);
-    const handleInputChange=(e)=>{
-        const {name,value}=e.target;     
-        setFormData({
-            ...formData,
-         [name]:value
-        })
-    };
+  };
 
-    const handleFormSubmit=async (e)=>{
-        e.preventDefault();
-        dispatch(login(formData));
-        if(!showDialog){
-          const timer=setTimeout(()=>{
-            Navigate('/dashboard');
-         },1000)
-        }
-    };
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    dispatch(login(formData));
+    if (!showDialog) {
+      const timer = setTimeout(() => {
+        Navigate("/dashboard");
+      }, 1000);
+    }
+  };
 
-    useEffect(()=>{
-      if(showDialog){
-        const timer=setTimeout(()=>{
-           Navigate('/');
-        },5000)
+  useEffect(() => {
+    if (showDialog) {
+      const timer = setTimeout(() => {
+        Navigate("/");
+      }, 5000);
+    }
+  }, [showDialog]);
+
+  const handleReset = async (e) => {
+    try {
+      e.preventDefault();
+      if (!formData.email) {
+        setShowEmail(true);
+        return;
       }
-    },[showDialog]);
-
-    const handleReset= async(e)=>{
-        try{
-           e.preventDefault();
-           if(!formData.email){
-            setShowEmail(true);
-            return;
-           }
-           const body=JSON.stringify({email:formData.email});
-           const res=await axiosApi.post('user/auth/forgot-password',body);
-           if(res.status===200){
-              setShowDialog(true);
-           }
-        }catch(err){
-          console.error(err.message);
-        }
-    };
+      const body = JSON.stringify({ email: formData.email });
+      const res = await axiosApi.post("user/auth/forgot-password", body);
+      if (res.status === 200) {
+        setShowDialog(true);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
   return (
-<div>
-      <div className="font-bold shadow hover:shadow-md hover:bg-blue-200 text-2xl border-2 text-center w-fit border-blue-200 rounded mx-auto mb-10 mt-6 p-4 h-16 flex items-center justify-center">
-        RemoteCollab
+    <div className=" bg-slate-50  w-1/2 mx-auto mt-10">
+      <div className="font-bold shadow hover:shadow-md  hover:bg-blue-200 text-2xl border-2 text-center w-fit  bg-blue-100 border-blue-200 rounded mx-auto mb-10 mt-6 p-4 h-16 flex items-center justify-center">
+        <Link to="/">RemoteCollab</Link>
       </div>
       <div className="w-full max-w-md mx-auto border-2 shadow rounded-lg p-6 bg-white">
         <form className="mx-2" onSubmit={handleFormSubmit}>
           <div className="mb-6">
-            <label className="block text-gray-700 text-lg font-medium">Email:</label>
+            <label className="block text-gray-700 text-lg font-medium">
+              Email:
+            </label>
             <input
               type="email"
               name="email"
@@ -74,7 +76,9 @@ const Login = ({}) => {
             />
           </div>
           <div className="mb-6">
-            <label className="block text-gray-700 text-lg font-medium">Password:</label>
+            <label className="block text-gray-700 text-lg font-medium">
+              Password:
+            </label>
             <input
               type="password"
               name="password"
@@ -104,7 +108,8 @@ const Login = ({}) => {
               <div className="bg-white border-2 text-center border-gray-700 rounded-md p-10 m-4">
                 <h2 className="text-xl font-bold mb-4">Password Reset Link</h2>
                 <p className="mb-4">
-                  A password reset link has been sent to your email. Please click the link to reset your password.
+                  A password reset link has been sent to your email. Please
+                  click the link to reset your password.
                 </p>
                 <Link to="/">
                   <button className="bg-blue-600 text-white w-28 h-10 rounded hover:bg-blue-700">
@@ -122,10 +127,16 @@ const Login = ({}) => {
               Login
             </button>
           </div>
+          <div className="text-center mt-4">
+            <p className="text-gray-700">New User?
+            <Link to="/register" className="text-blue-500 hover:text-blue-700">
+              Sign Up
+            </Link></p>
+          </div>
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

@@ -3,7 +3,7 @@ import axiosApi from '../../axios/api';
 import { useSelector } from 'react-redux';
 import { useProjects } from '../../context/ProjectContext';
 
-const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,members}) => {
+const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,members,list=false}) => {
   const [isEditing, setIsEditing] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const [taskMembers,setTaskMembers]=useState([]);
@@ -25,6 +25,8 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,member
     _id: task._id
  
   });
+  console.log("edited task");
+  console.log(editedTask);
 
   useEffect(() => {
     if (Array.isArray(task.assignedTo) && Array.isArray(members)) {
@@ -67,7 +69,7 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,member
       const res = await axiosApi.post(`task/${task._id}/comment`, comment, {
         headers: { 'Content-Type': 'application/json' },
       });
-    
+      console.log(res.data);
 
       const updatedTask = {
         ...editedTask,
@@ -219,7 +221,9 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,member
                         key={idx}
                         className="text-gray-700 bg-gray-100 p-2 rounded shadow-sm"
                       >
-                        <strong>{comment.author.name}:</strong> {comment.content}
+                        <strong>
+                          {comment.author.name}:
+                          </strong> {comment.content}
                       </li>
                     ))
                   ) : (
@@ -227,7 +231,7 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,member
                   )}
                 </ul>
               </div>
-              {isAddComment && (
+              {isAddComment && !list && (
                 <div className="mt-4">
                   <label className="block mb-2">
                     New Comment:
@@ -246,7 +250,7 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,member
                   </button>
                 </div>
               )}
-              {!isAddComment && (
+              {!isAddComment && !list && (
                 <button
                   onClick={handleAddCommentClick}
                   className="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"

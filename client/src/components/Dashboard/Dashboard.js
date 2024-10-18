@@ -15,13 +15,15 @@ const Dashboard = () => {
   const checkIsAuth=()=>{
     if(!isAuthenticated || !user){
       const token=localStorage.getItem("token");
+      Navigate('/login');
       if(token){
         loadUser();
         return;
       }
-      Navigate('/login');
+      
      }
   }
+ 
   return (
     <div className="bg-gray-100 min-h-screen flex justify-center items-center">
       <div className="container mx-auto">

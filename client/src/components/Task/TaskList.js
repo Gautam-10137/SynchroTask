@@ -5,8 +5,9 @@ import TaskDetailDialog from "../DialogBox/TaskDetailDialog";
 import { loadUser } from "../../redux/authSlice";
 import { useProjects } from "../../context/ProjectContext";
 
+
 const TaskList = () => {
-  const {fetchTask}=useProjects();
+  const {fetchTask,fetchProjects}=useProjects();
   const { user } = useSelector((state) => state.auth);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,6 +26,7 @@ const TaskList = () => {
       }
     };
     useEffect(() => {
+        fetchProjects();
         fetchAssignedTasks();
       
     }, []);
@@ -59,6 +61,21 @@ const TaskList = () => {
       setError('Error updating task status');
     }
   };
+  // const handleSaveTaskDetails = async (updatedTask) => {
+  //   const taskId = updatedTask._id;
+  //   try {
+  //     const res = await axiosApi.put(`task/update/${taskId}`, updatedTask);
+  //   } catch (err) {
+  //     console.error("Error Saving/Updating Task");
+  //   }
+  //   const updatedTasks = project.tasks.map((t) =>
+  //     t._id === updatedTask._id ? updatedTask : t
+  //   );
+  //   const updatedProject = { ...project, tasks: updatedTasks };
+  //   await updateProject(updatedProject);
+  //   setProject(updatedProject);
+  //   setSelectedTask(null);
+  // };
 
   if (loading)
     return (
@@ -114,13 +131,14 @@ const TaskList = () => {
                 </select>
               </p>
               <p className="text-gray-700 mb-1">
-                <strong>Due Date:</strong>{" "}
-                {new Date(task.dueDate).toLocaleDateString()}
-              </p>
-              <p className="text-gray-700 mb-1">
                 <strong>Assigned Date:</strong>{" "}
                 {new Date(task.assignedDate).toLocaleDateString()}
               </p>
+              <p className="text-gray-700 mb-1">
+                <strong>Due Date:</strong>{" "}
+                {new Date(task.dueDate).toLocaleDateString()}
+              </p>
+              
             </li>
           ))}
         </ul>
@@ -130,7 +148,10 @@ const TaskList = () => {
         </div>
       )}
       {selectedTask && (
-        <TaskDetailDialog task={selectedTask} onClose={handleCloseDialog} />
+        <TaskDetailDialog task={selectedTask} 
+        list={true}
+        // onSave={handleSaveTaskDetails} 
+        onClose={handleCloseDialog} />
       )}
     </div>
   );

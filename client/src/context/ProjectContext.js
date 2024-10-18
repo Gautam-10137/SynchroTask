@@ -35,6 +35,7 @@ export const ProjectProvider = ({ children }) => {
           : project
       )
     );
+    fetchProjects();
   };
 
   
