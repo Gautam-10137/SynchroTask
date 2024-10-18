@@ -3,7 +3,7 @@ import axiosApi from '../../axios/api';
 import { useSelector } from 'react-redux';
 import { useProjects } from '../../context/ProjectContext';
 
-const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,members,list=false}) => {
+const TaskDetailDialog = ({ task, onClose, onSave=()=>{}, userRole ,handleRemove,members,fetchAssignedTasks=()=>{}}) => {
   const [isEditing, setIsEditing] = useState(false);
   const { user } = useSelector((state) => state.auth);
   const [taskMembers,setTaskMembers]=useState([]);
@@ -70,7 +70,7 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,member
         headers: { 'Content-Type': 'application/json' },
       });
       console.log(res.data);
-
+      
       const updatedTask = {
         ...editedTask,
         comments: [...editedTask.comments, res.data.newComment],
@@ -83,6 +83,8 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,member
       onSave(updatedTask);
       setIsAddComment(false);
       setNewComment('');
+      fetchAssignedTasks();
+    
  
     } catch (err) {
       console.error('Error adding comment:', err.message);
@@ -231,7 +233,7 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,member
                   )}
                 </ul>
               </div>
-              {isAddComment && !list && (
+              {isAddComment  && (
                 <div className="mt-4">
                   <label className="block mb-2">
                     New Comment:
@@ -250,7 +252,7 @@ const TaskDetailDialog = ({ task, onClose, onSave, userRole ,handleRemove,member
                   </button>
                 </div>
               )}
-              {!isAddComment && !list && (
+              {!isAddComment  && (
                 <button
                   onClick={handleAddCommentClick}
                   className="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"

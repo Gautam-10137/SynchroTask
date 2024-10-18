@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axiosApi from "../../axios/api";
 import { useSelector } from "react-redux";
 import TaskDetailDialog from "../DialogBox/TaskDetailDialog";
-import { loadUser } from "../../redux/authSlice";
 import { useProjects } from "../../context/ProjectContext";
 
 
@@ -14,11 +13,12 @@ const TaskList = () => {
   const [error, setError] = useState(null);
   const [selectedTask, setSelectedTask] = useState(null);
 
+  
   const fetchAssignedTasks = async () => {
       try {
         const res = await axiosApi.get(`/task/assigned-to/${user.id}`);
         setTasks(res.data.tasks);
-        
+        console.log("Fetched Assigne Task");
       } catch (err) {
         setError("Error fetching tasks");
       } finally {
@@ -61,21 +61,7 @@ const TaskList = () => {
       setError('Error updating task status');
     }
   };
-  // const handleSaveTaskDetails = async (updatedTask) => {
-  //   const taskId = updatedTask._id;
-  //   try {
-  //     const res = await axiosApi.put(`task/update/${taskId}`, updatedTask);
-  //   } catch (err) {
-  //     console.error("Error Saving/Updating Task");
-  //   }
-  //   const updatedTasks = project.tasks.map((t) =>
-  //     t._id === updatedTask._id ? updatedTask : t
-  //   );
-  //   const updatedProject = { ...project, tasks: updatedTasks };
-  //   await updateProject(updatedProject);
-  //   setProject(updatedProject);
-  //   setSelectedTask(null);
-  // };
+  
 
   if (loading)
     return (
@@ -150,7 +136,8 @@ const TaskList = () => {
       {selectedTask && (
         <TaskDetailDialog task={selectedTask} 
         list={true}
-        // onSave={handleSaveTaskDetails} 
+      
+        fetchAssignedTasks={fetchAssignedTasks}
         onClose={handleCloseDialog} />
       )}
     </div>
