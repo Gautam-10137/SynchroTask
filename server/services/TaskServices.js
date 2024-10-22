@@ -65,7 +65,7 @@ const TaskServices = {
     try {
       const task = await Task.findByIdAndUpdate(taskId, 
         { $set :{status: updatedStatus} },{new:true});
-      console.log(task);
+      
       return task;
     } catch (err) {
       console.error("Error Updating Tasks");

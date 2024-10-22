@@ -69,23 +69,17 @@ const TaskDetailDialog = ({ task, onClose, onSave=()=>{}, userRole ,handleRemove
       const res = await axiosApi.post(`task/${task._id}/comment`, comment, {
         headers: { 'Content-Type': 'application/json' },
       });
-      console.log(res.data);
-      
+   
       const updatedTask = {
         ...editedTask,
         comments: [...editedTask.comments, res.data.newComment],
-      };
-  
-      setEditedTask(updatedTask);
-  
+      }; 
+      setEditedTask(updatedTask); 
       updateTaskInProject(updatedTask);
-  
       onSave(updatedTask);
       setIsAddComment(false);
       setNewComment('');
       fetchAssignedTasks();
-    
- 
     } catch (err) {
       console.error('Error adding comment:', err.message);
     }
@@ -262,8 +256,7 @@ const TaskDetailDialog = ({ task, onClose, onSave=()=>{}, userRole ,handleRemove
               )}
             </div>
             <div className="flex justify-end space-x-4 mt-4">
-            {(userRole === 'admin' || userRole === 'manager') && (
-                
+            {(userRole === 'admin' || userRole === 'manager') && (  
                 <button
                   onClick={handleRemoveTask}
                   className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
@@ -272,7 +265,6 @@ const TaskDetailDialog = ({ task, onClose, onSave=()=>{}, userRole ,handleRemove
                 </button>
               )}
               {(userRole === 'admin' || userRole === 'manager') && (
-                
                 <button
                   onClick={() => setIsEditing(true)}
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"

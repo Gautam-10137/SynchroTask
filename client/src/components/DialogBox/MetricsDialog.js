@@ -64,7 +64,7 @@ const MetricsDialog = ({ project, setShowMetricsDialog }) => {
     datasets: [
       {
         label: 'Average Task Duration (Days)',
-        data: [averageDuration.toFixed(2)], // Keep only two decimal points
+        data: [averageDuration.toFixed(2)], 
         backgroundColor: '#4BC0C0',
         hoverBackgroundColor: '#4BC0C0',
       },

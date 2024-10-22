@@ -30,9 +30,8 @@ const TaskController = {
     try{
       const {taskId}= req.params;
       const {status}=req.body;
-      console.log(req.body);
+    
       const task=await TaskServices.updateTaskStatusInDB(taskId,status);
-      console.log(task);
       if(!task){
        return  res.status(404).send({message:'Task not found'});
       }
