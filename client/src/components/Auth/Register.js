@@ -42,7 +42,7 @@ const Register = () => {
   return (
     <div className=" bg-slate-50 w-1/2 mx-auto">
     <div className="font-bold shadow hover:shadow-md bg-blue-100 hover:bg-blue-200 text-2xl border-2 text-center w-fit border-blue-200 rounded mx-auto mb-10 mt-6 p-4 h-16 flex items-center justify-center">
-      <Link to="/">RemoteCollab</Link>
+      <Link to="/">SynchroTask</Link>
     </div>
     <div className="w-full max-w-md mx-auto border-2 shadow-md rounded-lg p-6 bg-white">
       <form onSubmit={handleFormSubmit}>

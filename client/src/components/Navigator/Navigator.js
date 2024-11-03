@@ -18,7 +18,7 @@ const Navigator = ({ page }) => {
       <div className="container mx-auto flex justify-between items-center py-4">
         <div className="text-2xl font-bold">
           <Link to="/" className="hover:text-gray-300 transition duration-300">
-            RemoteCollab
+            SynchroTask
           </Link>
         </div>
         <div className="text-xl font-semibold flex space-x-8">

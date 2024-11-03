@@ -29,6 +29,7 @@ const handleSocketConnection = async (io) => {
             return ChatMessage.findById(savedMessage._id).populate('senderID').exec();
           })
           .then((populatedMessage) => {
+            // here we used IO to send message to every instance of socket running for this particular room
             io.to(message.projectID).emit('receiveMessage', populatedMessage);
           })
           .catch((error) => {
