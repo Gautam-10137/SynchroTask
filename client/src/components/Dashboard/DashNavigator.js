@@ -27,10 +27,10 @@ const DashNavigator = () => {
         My Dashboard
       </Link>
       <div className="flex items-center space-x-4 text-white">
-        {user ? <span className="text-lg font-medium">Hello, {user.name}</span> : null}
+        {user ? <span className="text-xl font-medium">Hello, {user.name}</span> : null}
         <button
           onClick={handleLogout}
-          className="text-red-300 hover:text-red-500 transition duration-300"
+          className="text-lg text-red-300 hover:text-red-500 transition duration-300"
         >
           Logout
         </button>

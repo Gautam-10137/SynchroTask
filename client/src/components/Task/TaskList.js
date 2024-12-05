@@ -18,7 +18,7 @@ const TaskList = () => {
       try {
         const res = await axiosApi.get(`/task/assigned-to/${user.id}`);
         setTasks(res.data.tasks);
-        console.log("Fetched Assigne Task");
+        
       } catch (err) {
         setError("Error fetching tasks");
       } finally {

@@ -25,8 +25,7 @@ const TaskDetailDialog = ({ task, onClose, onSave=()=>{}, userRole ,handleRemove
     _id: task._id
  
   });
-  console.log("edited task");
-  console.log(editedTask);
+
 
   useEffect(() => {
     if (Array.isArray(task.assignedTo) && Array.isArray(members)) {
@@ -62,7 +61,7 @@ const TaskDetailDialog = ({ task, onClose, onSave=()=>{}, userRole ,handleRemove
   const handleAddCommentClick = () => {
     setIsAddComment(true);
   };
-  console.log(task);
+  
   const handleAddComment = async () => {
     try {
       const comment = { author: user.id, content: newComment };
