@@ -28,9 +28,9 @@
 
 ## 🛠️ Tech Stack
 <ul>
-  <li><b>Frontend</b>: React.js, Material UI</li>
+  <li><b>Frontend</b>: React.js, TailwindCSS</li>
   <li><b>Backend</b>: Node.js, Express.js</li>
-  <li><b>Database</b>: MongoDB, AWS DynamoDB</li>
+  <li><b>Database</b>: MongoDB</li>
   <li><b>Real-time Communication</b>: WebSocket</li>
 </ul>
 
